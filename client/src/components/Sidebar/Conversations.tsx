@@ -1,5 +1,8 @@
 import React from "react";
 import { Avatar, List } from "antd";
+import { useAppDispatch } from "../../hook/useAppDispatch";
+import { setComponentAction } from "../../reducer/layout.reducer";
+import { CHATTING } from "../../config/constant";
 
 const data = [
   {
@@ -50,6 +53,10 @@ const data = [
 ];
 
 const Conversations = () => {
+  const dispatch = useAppDispatch();
+  const handleChat = () => {
+    dispatch(setComponentAction(CHATTING));
+  };
   return (
     <div className="h-full w-full bg-white flex flex-col justify-start items-center">
       <div className="flex justify-start w-full px-4 py-2">
@@ -61,6 +68,7 @@ const Conversations = () => {
           dataSource={data}
           renderItem={(item, index) => (
             <List.Item
+              onClick={handleChat}
               className={`${
                 index === 2 ? "bg-red-50 " : ""
               } rounded-lg hover:bg-red-50`}

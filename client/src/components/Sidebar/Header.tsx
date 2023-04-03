@@ -6,9 +6,11 @@ import {
 } from "@ant-design/icons";
 import { Avatar, Tooltip } from "antd";
 import React from "react";
+import { LIKE, SETTING } from "../../config/constant";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { useAppSelector } from "../../hook/useAppSelector";
 import { logoutAction } from "../../reducer/auth.reducer";
+import { setComponentAction } from "../../reducer/layout.reducer";
 import CircleButton from "../Button/CircleButton";
 
 const Header = () => {
@@ -17,6 +19,13 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutAction());
+  };
+
+  const handleSetting = () => {
+    dispatch(setComponentAction(SETTING));
+  };
+  const handleLike = () => {
+    dispatch(setComponentAction(LIKE));
   };
 
   return (
@@ -29,12 +38,12 @@ const Header = () => {
       </div>
       <div className="flex">
         <Tooltip title="See who like you">
-          <CircleButton className="mr-2">
+          <CircleButton className="mr-2" onClick={handleLike}>
             <HeartOutlined className="text-red-50" />
           </CircleButton>
         </Tooltip>
         <Tooltip title="Setting">
-          <CircleButton className="mr-2">
+          <CircleButton className="mr-2" onClick={handleSetting}>
             <SettingOutlined className="text-red-50" />
           </CircleButton>
         </Tooltip>

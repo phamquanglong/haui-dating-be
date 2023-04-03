@@ -1,4 +1,3 @@
-import { Card } from "antd";
 import React from "react";
 import Info from "./Info";
 import ChatBox from "./ChatBox";

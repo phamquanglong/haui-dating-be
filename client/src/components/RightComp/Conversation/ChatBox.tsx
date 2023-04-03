@@ -1,4 +1,4 @@
-import { CloseOutlined, FlagOutlined, UserOutlined } from "@ant-design/icons";
+import { CloseOutlined, FlagOutlined } from "@ant-design/icons";
 import { Avatar, Button, Tooltip } from "antd";
 import React from "react";
 import CircleButton from "../../Button/CircleButton";
@@ -9,8 +9,12 @@ const ChatBox = () => {
     <div className="w-full h-[calc(100vh_-_4rem)] rounded-l-lg border-[0.125px] border-r-0">
       <div className="h-[12%] w-full border-b-[0.25px] px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <Avatar shape="circle" size={64} icon={<UserOutlined />} />
-          <h3 className="text-2xl ml-4 text-gray-600">maiem</h3>
+          <Avatar
+            shape="circle"
+            size={64}
+            src="https://picsum.photos/600/600"
+          />
+          <h3 className="text-2xl ml-4 font-medium">abc</h3>
         </div>
         <div className="flex justify-center items-center">
           <Tooltip title="Report this user.">
