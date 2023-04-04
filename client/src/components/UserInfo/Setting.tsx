@@ -33,7 +33,7 @@ const Setting = () => {
             >
               <Slider
                 marks={{
-                  18: {
+                  0: {
                     style: {
                       color: "#ff4d4f",
                       marginTop: "16px",
@@ -41,7 +41,7 @@ const Setting = () => {
                     label: <strong>0</strong>,
                   },
                 }}
-                min={18}
+                min={0}
                 range
                 defaultValue={[0, 100]}
               />

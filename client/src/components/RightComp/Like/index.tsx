@@ -31,17 +31,15 @@ const Like: React.FC = () => {
   };
 
   return (
-    <>
-      <Card
-        loading={false}
-        style={{ width: "100%", height: "100%" }}
-        tabList={tabListNoTitle}
-        activeTabKey={activeTabKey2}
-        onTabChange={onTab2Change}
-      >
-        {contentListNoTitle[activeTabKey2]}
-      </Card>
-    </>
+    <Card
+      loading={false}
+      className="w-full h-full shadow-lg"
+      tabList={tabListNoTitle}
+      activeTabKey={activeTabKey2}
+      onTabChange={onTab2Change}
+    >
+      {contentListNoTitle[activeTabKey2]}
+    </Card>
   );
 };
 

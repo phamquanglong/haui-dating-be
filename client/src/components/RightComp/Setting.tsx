@@ -1,6 +1,6 @@
 import { Card } from "antd";
 import React from "react";
-import Info from "../Info";
+import Info from "../UserInfo";
 
 const Setting = () => {
   return (

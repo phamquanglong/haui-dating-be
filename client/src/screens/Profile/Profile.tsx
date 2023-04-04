@@ -1,6 +1,6 @@
 import { Typography } from "antd";
 import React from "react";
-import Info from "../../components/Info";
+import Info from "../../components/UserInfo";
 import { useAppSelector } from "../../hook/useAppSelector";
 
 const Profile = () => {
