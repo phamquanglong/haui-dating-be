@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
+import { ConversationsModule } from './modules/conversations/conversations.module';
+import { HobbiesModule } from './modules/hobbies/hobbies.module';
+import { MessagesModule } from './modules/messages/messages.module';
+import { UserActionsModule } from './modules/user-actions/user-actions.module';
+import { UserHobbiesModule } from './modules/user-hobbies/user-hobbies.module';
+import { UserImagesModule } from './modules/user-images/user-images.module';
+import { UserSettingsModule } from './modules/user-settings/user-settings.module';
 import { UsersModule } from './modules/users/users.module';
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -21,6 +27,13 @@ import { UsersModule } from './modules/users/users.module';
 
     UsersModule,
     AuthModule,
+    HobbiesModule,
+    UserHobbiesModule,
+    UserSettingsModule,
+    UserImagesModule,
+    UserActionsModule,
+    ConversationsModule,
+    MessagesModule,
   ],
 })
 export class AppModule {}

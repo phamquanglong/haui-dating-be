@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('User')
 export class User {
@@ -13,6 +13,27 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({ nullable: true })
+  fullName?: string;
+
+  @Column('enum', { nullable: true })
+  gender?: 'male' | 'female' | 'lgbt';
+
+  @Column({ nullable: true })
+  birthday?: Date;
+
+  @Column({ nullable: true })
+  bio?: string;
+
+  @Column({ nullable: true })
+  reputational?: number;
+
+  @Column({ nullable: true })
+  latitude?: number;
+
+  @Column({ nullable: true })
+  longitude?: number;
 
   @Column({ default: new Date() })
   createdAt: Date;
