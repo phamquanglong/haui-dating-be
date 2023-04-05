@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { UserImage } from '../user-images/user-images.entity';
+
+export enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+  LGBT = 'lgbt',
+}
 
 @Entity('User')
 export class User {
@@ -17,8 +24,8 @@ export class User {
   @Column({ nullable: true })
   fullName?: string;
 
-  @Column('enum', { nullable: true })
-  gender?: 'male' | 'female' | 'lgbt';
+  @Column({ type: 'enum', enum: Gender })
+  gender?: Gender;
 
   @Column({ nullable: true })
   birthday?: Date;
@@ -40,4 +47,7 @@ export class User {
 
   @Column({ default: new Date() })
   updatedAt?: Date;
+
+  @OneToMany(() => UserImage, (userImage) => userImage.user)
+  userImages: UserImage[];
 }

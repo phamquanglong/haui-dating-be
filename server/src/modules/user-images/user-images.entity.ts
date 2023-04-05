@@ -1,12 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from '../users/user.entity';
 
 @Entity('UserImage')
 export class UserImage {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  userId: number;
 
   @Column()
   imageUrl: string;
@@ -16,4 +14,7 @@ export class UserImage {
 
   @Column({ default: new Date() })
   updatedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.userImages)
+  user: User;
 }
