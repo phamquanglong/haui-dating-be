@@ -9,6 +9,8 @@ import { UserHobbiesModule } from './modules/user-hobbies/user-hobbies.module';
 import { UserImagesModule } from './modules/user-images/user-images.module';
 import { UserSettingsModule } from './modules/user-settings/user-settings.module';
 import { UsersModule } from './modules/users/users.module';
+import { ProfileModule } from './modules/profile/profile.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -34,6 +36,8 @@ import { UsersModule } from './modules/users/users.module';
     UserActionsModule,
     ConversationsModule,
     MessagesModule,
+    ProfileModule,
+    CloudinaryModule,
   ],
 })
 export class AppModule {}

@@ -14,9 +14,9 @@ export const routes: IRouteConfig[] = [
   {
     path: "/",
     component: (
-      // <AuthenticateRoute type={PRIVATE_ROUTE}>
-      <Home />
-      // </AuthenticateRoute>
+      <AuthenticateRoute type={PRIVATE_ROUTE}>
+        <Home />
+      </AuthenticateRoute>
     ),
   },
   {

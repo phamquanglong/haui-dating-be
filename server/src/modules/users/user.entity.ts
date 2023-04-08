@@ -1,5 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
+import { Profile } from '../profile/profile.entity';
+import { UserHobbies } from '../user-hobbies/user-hobbies.entity';
 import { UserImage } from '../user-images/user-images.entity';
+import { UserSetting } from '../user-settings/user-settings.entity';
 
 export enum Gender {
   MALE = 'male',
@@ -21,33 +30,21 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ nullable: true })
-  fullName?: string;
-
-  @Column({ type: 'enum', enum: Gender })
-  gender?: Gender;
-
-  @Column({ nullable: true })
-  birthday?: Date;
-
-  @Column({ nullable: true })
-  bio?: string;
-
-  @Column({ nullable: true })
-  reputational?: number;
-
-  @Column({ nullable: true })
-  latitude?: number;
-
-  @Column({ nullable: true })
-  longitude?: number;
-
   @Column({ default: new Date() })
   createdAt: Date;
 
   @Column({ default: new Date() })
   updatedAt?: Date;
 
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
+
   @OneToMany(() => UserImage, (userImage) => userImage.user)
-  userImages: UserImage[];
+  images: UserImage[];
+
+  @OneToOne(() => UserSetting, (userSetting) => userSetting.user)
+  settings: UserSetting;
+
+  @OneToMany(() => UserHobbies, (userHobbies) => userHobbies.user)
+  userHobbies: UserHobbies[];
 }

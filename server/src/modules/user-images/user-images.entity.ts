@@ -15,6 +15,6 @@ export class UserImage {
   @Column({ default: new Date() })
   updatedAt?: Date;
 
-  @ManyToOne(() => User, (user) => user.userImages)
+  @ManyToOne(() => User, (user) => user.images)
   user: User;
 }

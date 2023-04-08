@@ -1,4 +1,3 @@
-import { Max, Min } from 'class-validator';
 import {
   Entity,
   Column,
@@ -11,26 +10,34 @@ import { User } from '../users/user.entity';
 export enum Gender {
   MALE = 'male',
   FEMALE = 'female',
-  ALL = 'all',
+  LGBT = 'lgbt',
 }
 
-@Entity('UserSetting')
-export class UserSetting {
+@Entity('Profile')
+export class Profile {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int', { array: true })
-  @Min(0)
-  @Max(100)
-  distance: number[];
-
-  @Column('int', { array: true })
-  @Min(18)
-  @Max(38)
-  old: number[];
+  @Column()
+  fullName: string;
 
   @Column({ type: 'enum', enum: Gender })
   gender: Gender;
+
+  @Column()
+  birthday: string;
+
+  @Column()
+  bio: string;
+
+  @Column()
+  reputational: number;
+
+  @Column()
+  latitude: number;
+
+  @Column()
+  longitude?: number;
 
   @Column({ default: new Date() })
   createdAt: Date;
@@ -38,7 +45,7 @@ export class UserSetting {
   @Column({ default: new Date() })
   updatedAt?: Date;
 
-  @OneToOne(() => User, (user) => user.settings)
+  @OneToOne(() => User, (user) => user.profile)
   @JoinColumn()
   user: User;
 }

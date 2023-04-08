@@ -8,5 +8,6 @@ import { Hobby } from './hobbies.entity';
   imports: [TypeOrmModule.forFeature([Hobby])],
   controllers: [HobbiesController],
   providers: [HobbiesService],
+  exports: [HobbiesService],
 })
 export class HobbiesModule {}
