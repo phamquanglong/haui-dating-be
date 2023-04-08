@@ -1,6 +1,12 @@
 import React from "react";
 import TinderCard from "react-tinder-card";
 import Card from "./Card";
+import {
+  BsArrowRightSquare,
+  BsArrowLeftSquare,
+  BsArrowDownSquare,
+  BsArrowUpSquare,
+} from "react-icons/bs";
 
 const Explore = () => {
   const a = [1, 2, 3, 4, 5, 6];
@@ -19,7 +25,24 @@ const Explore = () => {
           </TinderCard>
         ))}
       </div>
-      <div className="w-full h-[10%] bg-slate-200 mt-4"></div>
+      <div className="w-full h-[10%] text-gray-400 mt-4 flex justify-center items-center">
+        <div className="flex mr-10">
+          <BsArrowLeftSquare className="text-xl mr-1" />
+          <p>Nope</p>
+        </div>
+        <div className="flex mr-10">
+          <BsArrowRightSquare className="text-xl mr-1" />
+          <p>Like</p>
+        </div>
+        <div className="flex mr-10">
+          <BsArrowUpSquare className="text-xl mr-1" />
+          <p>Open profile</p>
+        </div>
+        <div className="flex">
+          <BsArrowDownSquare className="text-xl mr-1" />
+          <p>Close profile</p>
+        </div>
+      </div>
     </div>
   );
 };

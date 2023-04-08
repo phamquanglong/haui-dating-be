@@ -34,7 +34,7 @@ const ChatBox = () => {
         <input
           className="placeholder:text-slate-400 text-lg block w-[90%] outline-none"
           type="text"
-          placeholder="Type a message"
+          placeholder="Type a message ..."
         />
         <Button type="primary" shape="round" danger size="large">
           Send

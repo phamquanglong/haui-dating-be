@@ -1,8 +1,7 @@
 import React from "react";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { callApiLogin } from "../../reducer/auth.reducer";
-import { toast } from "react-toastify";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -10,13 +9,9 @@ const Login = () => {
   const [formRef] = Form.useForm();
 
   const handleSubmit = (value) => {
-    dispatch(callApiLogin({ ...value }))
-      .then((response) => {
-        toast.success(response.payload.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(callApiLogin({ ...value })).then(() =>
+      message.success("Login successfully.", 2)
+    );
   };
 
   return (

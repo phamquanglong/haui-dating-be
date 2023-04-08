@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { callApiRegister } from "../../reducer/auth.reducer";
 import { useAppDispatch } from "../../hook/useAppDispatch";
-import { toast } from "react-toastify";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 
 const Register = () => {
   const dispatch = useAppDispatch();
@@ -11,13 +10,9 @@ const Register = () => {
 
   const handleSubmit = (value) => {
     delete value.cfPassword;
-    dispatch(callApiRegister({ ...value }))
-      .then((response) => {
-        toast.success(response.payload.data.message);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    dispatch(callApiRegister({ ...value })).then(() => {
+      message.success("Register successfully.", 2);
+    });
   };
 
   return (

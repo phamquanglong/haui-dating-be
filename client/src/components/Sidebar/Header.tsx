@@ -4,7 +4,7 @@ import {
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Tooltip } from "antd";
+import { Avatar, message, Tooltip } from "antd";
 import React from "react";
 import { LIKE, SETTING } from "../../config/constant";
 import { useAppDispatch } from "../../hook/useAppDispatch";
@@ -19,6 +19,7 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutAction());
+    message.success("Logout successfully.", 2);
   };
 
   const handleSetting = () => {

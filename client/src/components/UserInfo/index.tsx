@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Steps, theme } from "antd";
 import BasicInfo from "./BasicInfo";
 import Hobbies from "./Hobbies";
 import ChooseImg from "./ChooseImg";
 import Setting from "./Setting";
+import { useAppDispatch } from "../../hook/useAppDispatch";
+import { callApiGetAllHobby } from "../../reducer/hobby.reducer";
 
 const Info = ({ className }: { className?: string }) => {
+  const dispatch = useAppDispatch();
   const [formRef] = Form.useForm();
+
+  useEffect(() => {
+    dispatch(callApiGetAllHobby());
+
+    formRef.setFieldsValue({
+      hobbies: [],
+      gender: "male",
+      settingDistance: [0, 100],
+      settingGender: "female",
+      settingOld: [18, 38],
+    });
+  }, [dispatch]);
 
   const steps = [
     {
