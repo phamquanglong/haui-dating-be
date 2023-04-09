@@ -1,7 +1,10 @@
-import { Modal, Upload } from "antd";
+import { Form, Modal, Select, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import React, { useEffect, useState } from "react";
+import { useAppDispatch } from "../../hook/useAppDispatch";
+import { useAppSelector } from "../../hook/useAppSelector";
+import { callApiUploadImage } from "../../reducer/user.reducer";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -11,25 +14,33 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-const ChooseImg = () => {
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
+const ChooseImg = ({ formRef }: { formRef: any }) => {
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector((state) => state.userReducer.loadingUpload);
+  const image = useAppSelector((state) => state.userReducer.imageUrl);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
 
   useEffect(() => {
-    console.log(fileList);
-  }, [fileList]);
+    if (image?.url)
+      formRef?.setFieldValue("images", [
+        ...formRef?.getFieldValue("images"),
+        image?.url,
+      ]);
+  }, [image, formRef]);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
+    dispatch(
+      callApiUploadImage({
+        file: newFileList[newFileList.length - 1].originFileObj,
+      })
+    ).then(() => {
+      if (!loading) {
+        setFileList(newFileList);
+      }
+    });
   };
 
   const onPreview = async (file: UploadFile) => {
@@ -47,16 +58,19 @@ const ChooseImg = () => {
   const handleCancel = () => setPreviewOpen(false);
 
   return (
-    <div className=" h-[500px] flex justify-center ">
+    <div className=" h-[500px] flex justify-center relative">
+      <Form.Item className="hidden" name="images">
+        <Select mode="tags" />
+      </Form.Item>
       <div className="w-[80%] -mt-16">
         <ImgCrop showGrid rotationSlider aspectSlider showReset>
           <>
             <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               listType="picture-card"
               fileList={fileList}
               onChange={onChange}
               onPreview={onPreview}
+              beforeUpload={() => false}
             >
               {fileList.length < 5 && "+ Choose"}
             </Upload>

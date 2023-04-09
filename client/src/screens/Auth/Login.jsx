@@ -9,9 +9,12 @@ const Login = () => {
   const [formRef] = Form.useForm();
 
   const handleSubmit = (value) => {
-    dispatch(callApiLogin({ ...value })).then(() =>
-      message.success("Login successfully.", 2)
-    );
+    dispatch(callApiLogin({ ...value })).then((result) => {
+      if (result?.payload?.response?.status !== 400)
+        message.success("Login successfully.", 2);
+
+      return;
+    });
   };
 
   return (

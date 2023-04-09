@@ -1,27 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Steps, theme } from "antd";
+import { Button, Form, message, Steps, theme } from "antd";
 import BasicInfo from "./BasicInfo";
 import Hobbies from "./Hobbies";
 import ChooseImg from "./ChooseImg";
 import Setting from "./Setting";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { callApiGetAllHobby } from "../../reducer/hobby.reducer";
+import { IUserInformationRequest } from "../../interface/User";
+import dayjs from "dayjs";
+import { callApiPostUserInformation } from "../../reducer/user.reducer";
+import { useAppSelector } from "../../hook/useAppSelector";
 
 const Info = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.authReducer.user);
   const [formRef] = Form.useForm();
+  const [location, setLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
+
+  const getLocation = async () => {
+    await navigator.geolocation.getCurrentPosition(
+      (position) =>
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        }),
+      (err) => console.log(err)
+    );
+  };
 
   useEffect(() => {
     dispatch(callApiGetAllHobby());
-
+    getLocation();
     formRef.setFieldsValue({
-      hobbies: [],
-      gender: "male",
-      settingDistance: [0, 100],
-      settingGender: "female",
-      settingOld: [18, 38],
+      bio: user?.profile?.bio || "",
+      birthday: dayjs(user?.profile?.birthday, "YYYY/MM/DD") || "",
+      hobbies: user?.userHobbies?.map((el) => el.hobby.id) || [],
+      gender: user?.profile?.gender || "male",
+      images: [],
+      settingDistance: user?.settings?.distance || [0, 100],
+      settingGender: user?.settings?.gender || "female",
+      settingOld: user?.settings?.old || [18, 38],
     });
-  }, [dispatch]);
+  }, [dispatch, formRef, user]);
 
   const steps = [
     {
@@ -34,7 +57,7 @@ const Info = ({ className }: { className?: string }) => {
     },
     {
       title: "Choose your picture",
-      content: <ChooseImg />,
+      content: <ChooseImg formRef={formRef} />,
     },
     {
       title: "Settings",
@@ -45,7 +68,19 @@ const Info = ({ className }: { className?: string }) => {
   const [current, setCurrent] = useState(0);
 
   const next = () => {
-    setCurrent(current + 1);
+    const data = formRef.getFieldsValue();
+    if (
+      (data.firstName &&
+        data.lastName &&
+        data.gender &&
+        data.birthday &&
+        data.bio &&
+        current === 0) ||
+      (data.hobbies.length > 0 && current === 1) ||
+      (data.images.length > 0 && current === 2)
+    )
+      setCurrent(current + 1);
+    else message.error("Please complete all information.");
   };
 
   const prev = () => {
@@ -65,7 +100,25 @@ const Info = ({ className }: { className?: string }) => {
   };
 
   const handleSubmit = (value: any) => {
-    console.log("🚀 ~ file: index.tsx:53 ~ handleSubmit ~ value:", value);
+    const data: IUserInformationRequest = {
+      profile: {
+        fullName: value.firstName + " " + value.lastName,
+        gender: value.gender,
+        birthday: dayjs(value.birthday).format("YYYY/MM/DD"),
+        bio: value.bio,
+        reputational: 10,
+        latitude: location.latitude,
+        longitude: location.longitude,
+      },
+      hobbies: value.hobbies,
+      images: value.images,
+      settings: {
+        distance: value.settingDistance,
+        gender: value.settingGender,
+        old: value.settingOld,
+      },
+    };
+    dispatch(callApiPostUserInformation(data));
   };
 
   return (

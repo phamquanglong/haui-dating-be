@@ -2,7 +2,6 @@ import {
   HeartOutlined,
   LogoutOutlined,
   SettingOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import { Avatar, message, Tooltip } from "antd";
 import React from "react";
@@ -32,9 +31,14 @@ const Header = () => {
   return (
     <div className="h-full w-full bg-gradient-to-r from-primaryColor to-rose-500 px-6 flex justify-between items-center">
       <div className="flex items-center">
-        <Avatar shape="circle" size={48} icon={<UserOutlined />} />
+        <Avatar
+          shape="circle"
+          size={48}
+          src={user?.images && user.images[0].imageUrl}
+          className="border-[1.5px] border-white"
+        />
         <h3 className="text-xl ml-2 text-red-50">
-          {user?.userName || "danglong"}
+          {user?.userName || "Welcome to HaUI Dating"}
         </h3>
       </div>
       <div className="flex">

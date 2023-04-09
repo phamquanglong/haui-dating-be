@@ -5,16 +5,17 @@ import {
 } from "@reduxjs/toolkit";
 import UserApi from "../api/user.api";
 import { ApiServiceSetAuthToken } from "../config/axiosConfig";
+import { IUser } from "../interface/User";
 
 interface State {
-  user: any;
+  user: IUser;
   isAuthenticated: boolean;
   loading: boolean;
   accessToken: string;
 }
 
 const initState: State = {
-  user: null,
+  user: {} as IUser,
   isAuthenticated: localStorage.getItem("isLogin") ? true : false,
   loading: false,
   accessToken: (localStorage.getItem("accessToken") as string) || "",
@@ -61,7 +62,7 @@ export const logoutAction = createAction("AUTH.ACTION_LOGOUT");
 export const authReducer = createReducer(initState, (builder) => {
   builder.addCase(logoutAction, (state) => {
     state.isAuthenticated = false;
-    state.user = null;
+    state.user = {} as IUser;
     state.accessToken = "";
     ApiServiceSetAuthToken(undefined);
   });

@@ -1,8 +1,11 @@
 import { Col, Form, Row, Select, Tooltip } from "antd";
 import React, { useMemo } from "react";
+import { useAppDispatch } from "../../hook/useAppDispatch";
 import { useAppSelector } from "../../hook/useAppSelector";
+import { callApiGetAllHobby } from "../../reducer/hobby.reducer";
 
 const Hobbies = ({ formRef }: { formRef: any }) => {
+  const dispatch = useAppDispatch();
   const hobbies = useAppSelector((state) => state.hobbyReducer.hobbies);
 
   const options = useMemo(
@@ -11,8 +14,25 @@ const Hobbies = ({ formRef }: { formRef: any }) => {
         value: hobby?.id,
         label: hobby?.name,
       })),
-    [hobbies, formRef.getFieldValue("hobbies")]
+    [hobbies]
   );
+
+  const handleOnClick = (hobby: any) => {
+    if (formRef.getFieldValue("hobbies")?.includes(hobby?.id)) {
+      formRef.setFieldValue("hobbies", [
+        ...formRef
+          .getFieldValue("hobbies")
+          ?.filter((id: any) => id !== hobby?.id),
+      ]);
+    } else {
+      formRef.setFieldValue("hobbies", [
+        ...formRef.getFieldValue("hobbies"),
+        hobby?.id,
+      ]);
+    }
+
+    dispatch(callApiGetAllHobby());
+  };
 
   return (
     <div className=" h-[500px] flex justify-center ">
@@ -30,6 +50,8 @@ const Hobbies = ({ formRef }: { formRef: any }) => {
                 placeholder="What are you interested in?"
                 mode="tags"
                 options={options}
+                onSelect={() => dispatch(callApiGetAllHobby())}
+                onChange={() => dispatch(callApiGetAllHobby())}
               />
             </Form.Item>
           </Col>
@@ -37,31 +59,30 @@ const Hobbies = ({ formRef }: { formRef: any }) => {
           <Col lg={24} className="h-[400px] overflow-y-scroll mt-14">
             <div className="w-full h-full">
               <Row gutter={[4, 4]}>
-                {hobbies.map((hobby: any) => (
-                  <Col span={6}>
-                    <Tooltip title={hobby?.name}>
-                      <div
-                        className={`h-[200px] w-full ${
-                          !formRef.getFieldValue("hobbies").includes(hobby?.id)
-                            ? ""
-                            : "border-[4px] rounded-xl border-primaryColor"
-                        }`}
-                        onClick={() =>
-                          formRef.setFieldValue("hobbies", [
-                            ...formRef.getFieldValue("hobbies"),
-                            hobby?.id,
-                          ])
-                        }
-                      >
-                        <img
-                          className="w-full h-full object-cover rounded-lg"
-                          src={hobby?.imageUrl}
-                          alt={hobby?.name}
-                        />
-                      </div>
-                    </Tooltip>
-                  </Col>
-                ))}
+                {hobbies.map((hobby: any) => {
+                  return (
+                    <Col span={6}>
+                      <Tooltip title={hobby?.name}>
+                        <div
+                          className={`h-[200px] w-full  ${
+                            !formRef
+                              .getFieldValue("hobbies")
+                              ?.includes(hobby?.id)
+                              ? "hover:opacity-60"
+                              : "border-[4px] rounded-xl border-primaryColor"
+                          }`}
+                          onClick={() => handleOnClick(hobby)}
+                        >
+                          <img
+                            className="w-full h-full object-cover rounded-lg"
+                            src={hobby?.imageUrl}
+                            alt={hobby?.name}
+                          />
+                        </div>
+                      </Tooltip>
+                    </Col>
+                  );
+                })}
               </Row>
             </div>
           </Col>
