@@ -5,7 +5,7 @@ import ListPeople from "./ListPeople";
 const tabListNoTitle = [
   {
     key: "likeMe",
-    tab: "Who like me",
+    tab: "Who liked me",
   },
   {
     key: "liked",

@@ -1,6 +1,10 @@
 import { AxiosResponse } from "axios";
 import ApiService from "../config/axiosConfig";
-import { IUser, IUserInformationRequest } from "../interface/User";
+import {
+  IUpdateUserInformationRequest,
+  IUser,
+  IUserInformationRequest,
+} from "../interface/User";
 
 export default class UserApi {
   static getInfo(): Promise<AxiosResponse<IUser>> {
@@ -25,5 +29,11 @@ export default class UserApi {
     body: IUserInformationRequest
   ): Promise<AxiosResponse<IUser>> {
     return ApiService.post("users/information", body);
+  }
+
+  static updateUserInformation(
+    body: IUpdateUserInformationRequest
+  ): Promise<AxiosResponse<IUser>> {
+    return ApiService.put("users/information", body);
   }
 }

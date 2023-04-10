@@ -15,41 +15,6 @@ const data = [
     desc: "test test test",
     avt: "https://picsum.photos/600/600",
   },
-  {
-    title: "abc abc",
-    desc: "test test test",
-    avt: "https://picsum.photos/600/600",
-  },
-  {
-    title: "abc abc",
-    desc: "test test test",
-    avt: "https://picsum.photos/600/600",
-  },
-  {
-    title: "abc abc",
-    desc: "test test test",
-    avt: "https://picsum.photos/600/600",
-  },
-  {
-    title: "abc abc",
-    desc: "test test test",
-    avt: "https://picsum.photos/600/600",
-  },
-  {
-    title: "abc abc",
-    desc: "test test test",
-    avt: "https://picsum.photos/600/600",
-  },
-  {
-    title: "abc abc",
-    desc: "test test test",
-    avt: "https://picsum.photos/600/600",
-  },
-  {
-    title: "abc abc",
-    desc: "test test test",
-    avt: "https://picsum.photos/600/600",
-  },
 ];
 
 const Conversations = () => {
@@ -70,7 +35,7 @@ const Conversations = () => {
             <List.Item
               onClick={handleChat}
               className={`${
-                index === 2 ? "bg-red-50 " : ""
+                index === 0 ? "bg-red-50 " : ""
               } rounded-lg hover:bg-red-50`}
             >
               <List.Item.Meta

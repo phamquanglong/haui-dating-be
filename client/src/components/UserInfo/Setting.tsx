@@ -53,7 +53,7 @@ const Setting = () => {
               <Radio.Group value="male">
                 <Radio.Button value="male">Male</Radio.Button>
                 <Radio.Button value="female">Female</Radio.Button>
-                <Radio.Button value="more">More</Radio.Button>
+                <Radio.Button value="all">More</Radio.Button>
               </Radio.Group>
             </Form.Item>
           </Col>

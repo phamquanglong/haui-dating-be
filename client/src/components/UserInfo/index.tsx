@@ -8,12 +8,20 @@ import { useAppDispatch } from "../../hook/useAppDispatch";
 import { callApiGetAllHobby } from "../../reducer/hobby.reducer";
 import { IUserInformationRequest } from "../../interface/User";
 import dayjs from "dayjs";
-import { callApiPostUserInformation } from "../../reducer/user.reducer";
+import {
+  callApiPostUserInformation,
+  callApiUpdateUserInformation,
+} from "../../reducer/user.reducer";
 import { useAppSelector } from "../../hook/useAppSelector";
 
 const Info = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.authReducer.user);
+  const [isUpdate] = useState(user?.profile ? true : false);
+  console.log(
+    "🚀 ~ file: index.tsx:18 ~ Info ~ isPostUserInformation:",
+    isUpdate
+  );
   const [formRef] = Form.useForm();
   const [location, setLocation] = useState({
     latitude: 0,
@@ -34,7 +42,11 @@ const Info = ({ className }: { className?: string }) => {
   useEffect(() => {
     dispatch(callApiGetAllHobby());
     getLocation();
+    const fullName = user?.profile?.fullName?.split(" ");
+    const lastName = fullName?.pop();
     formRef.setFieldsValue({
+      lastName: lastName || "",
+      firstName: fullName.join(" "),
       bio: user?.profile?.bio || "",
       birthday: dayjs(user?.profile?.birthday, "YYYY/MM/DD") || "",
       hobbies: user?.userHobbies?.map((el) => el.hobby.id) || [],
@@ -118,7 +130,8 @@ const Info = ({ className }: { className?: string }) => {
         old: value.settingOld,
       },
     };
-    dispatch(callApiPostUserInformation(data));
+    if (isUpdate) dispatch(callApiUpdateUserInformation(data));
+    else dispatch(callApiPostUserInformation(data));
   };
 
   return (

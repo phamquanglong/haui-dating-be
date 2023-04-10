@@ -1,17 +1,22 @@
 import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
 import UserApi from "../api/user.api";
-import { IUserInformationRequest } from "../interface/User";
+import {
+  IUpdateUserInformationRequest,
+  IUserInformationRequest,
+} from "../interface/User";
 
 interface State {
   loadingUpload: boolean;
   imageUrl: any;
   loadingPost: boolean;
+  loadingUpdate: boolean;
 }
 
 const initState: State = {
   loadingUpload: false,
   imageUrl: {},
   loadingPost: false,
+  loadingUpdate: false,
 };
 
 export const callApiPostUserInformation = createAsyncThunk(
@@ -19,6 +24,17 @@ export const callApiPostUserInformation = createAsyncThunk(
   async (body: IUserInformationRequest, thunkApi) => {
     try {
       return await UserApi.postUserInformation(body);
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  }
+);
+
+export const callApiUpdateUserInformation = createAsyncThunk(
+  "USER.UPDATE_USER_INFORMATION",
+  async (body: IUpdateUserInformationRequest, thunkApi) => {
+    try {
+      return await UserApi.updateUserInformation(body);
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
@@ -60,5 +76,16 @@ export const userReducer = createReducer(initState, (builder) => {
     })
     .addCase(callApiPostUserInformation.rejected, (state) => {
       state.loadingPost = false;
+    });
+
+  builder
+    .addCase(callApiUpdateUserInformation.pending, (state) => {
+      state.loadingUpdate = true;
+    })
+    .addCase(callApiUpdateUserInformation.fulfilled, (state, { payload }) => {
+      state.loadingUpdate = false;
+    })
+    .addCase(callApiUpdateUserInformation.rejected, (state) => {
+      state.loadingUpdate = false;
     });
 });

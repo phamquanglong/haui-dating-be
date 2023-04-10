@@ -22,14 +22,16 @@ const ChooseImg = ({ formRef }: { formRef: any }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
+  const user = useAppSelector((state) => state.authReducer.user);
+  const [isUpdate] = useState(user?.profile ? true : false);
 
   useEffect(() => {
-    if (image?.url)
+    if (image?.url && !isUpdate)
       formRef?.setFieldValue("images", [
         ...formRef?.getFieldValue("images"),
         image?.url,
       ]);
-  }, [image, formRef]);
+  }, [image, formRef, isUpdate]);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     dispatch(

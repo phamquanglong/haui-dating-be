@@ -4,6 +4,12 @@ export interface IUserInformationRequest {
   images: string[];
   settings: ISettings;
 }
+export interface IUpdateUserInformationRequest {
+  profile?: IProfile;
+  hobbies?: number[];
+  images?: string[];
+  settings?: ISettings;
+}
 
 interface IProfile {
   fullName: string;
