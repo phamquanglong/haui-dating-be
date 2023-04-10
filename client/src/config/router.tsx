@@ -1,7 +1,7 @@
 import { AuthenticateRoute } from "../components/AuthenticateRoute";
 import Login from "../screens/Auth/Login";
 import Register from "../screens/Auth/Register";
-import Home from "../screens/home/Home";
+import Home from "../screens/Home/Home";
 import Profile from "../screens/Profile/Profile";
 import { PRIVATE_ROUTE, PUBLIC_ROUTE } from "./constant";
 

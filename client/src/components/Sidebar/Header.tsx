@@ -15,6 +15,7 @@ import CircleButton from "../Button/CircleButton";
 const Header = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.authReducer.user);
+  const loading = useAppSelector((state) => state.authReducer.loading);
 
   const handleLogout = () => {
     dispatch(logoutAction());
@@ -34,7 +35,11 @@ const Header = () => {
         <Avatar
           shape="circle"
           size={48}
-          src={user?.images && user.images[0].imageUrl}
+          src={
+            user?.profile !== null && !loading && user?.images?.length > 0
+              ? user?.images[0]?.imageUrl
+              : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
+          }
           className="border-[1.5px] border-white"
         />
         <h3 className="text-xl ml-2 text-red-50">

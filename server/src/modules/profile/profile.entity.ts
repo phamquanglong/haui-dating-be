@@ -33,10 +33,10 @@ export class Profile {
   @Column()
   reputational: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 7, default: 0 })
   latitude: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 7, default: 0 })
   longitude?: number;
 
   @Column({ default: new Date() })

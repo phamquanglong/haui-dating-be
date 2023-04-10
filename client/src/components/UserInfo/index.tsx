@@ -13,15 +13,13 @@ import {
   callApiUpdateUserInformation,
 } from "../../reducer/user.reducer";
 import { useAppSelector } from "../../hook/useAppSelector";
+import { useNavigate } from "react-router-dom";
 
 const Info = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.authReducer.user);
   const [isUpdate] = useState(user?.profile ? true : false);
-  console.log(
-    "🚀 ~ file: index.tsx:18 ~ Info ~ isPostUserInformation:",
-    isUpdate
-  );
+  const navigate = useNavigate();
   const [formRef] = Form.useForm();
   const [location, setLocation] = useState({
     latitude: 0,
@@ -42,13 +40,15 @@ const Info = ({ className }: { className?: string }) => {
   useEffect(() => {
     dispatch(callApiGetAllHobby());
     getLocation();
-    const fullName = user?.profile?.fullName?.split(" ");
+    const fullName = user?.profile?.fullName?.split(" ") || [];
     const lastName = fullName?.pop();
     formRef.setFieldsValue({
       lastName: lastName || "",
-      firstName: fullName.join(" "),
+      firstName: fullName.join(" ") || "",
       bio: user?.profile?.bio || "",
-      birthday: dayjs(user?.profile?.birthday, "YYYY/MM/DD") || "",
+      ...(isUpdate && {
+        birthday: dayjs(user?.profile?.birthday, "YYYY/MM/DD") || "",
+      }),
       hobbies: user?.userHobbies?.map((el) => el.hobby.id) || [],
       gender: user?.profile?.gender || "male",
       images: [],
@@ -56,7 +56,7 @@ const Info = ({ className }: { className?: string }) => {
       settingGender: user?.settings?.gender || "female",
       settingOld: user?.settings?.old || [18, 38],
     });
-  }, [dispatch, formRef, user]);
+  }, [dispatch, formRef, user, isUpdate]);
 
   const steps = [
     {
@@ -131,7 +131,11 @@ const Info = ({ className }: { className?: string }) => {
       },
     };
     if (isUpdate) dispatch(callApiUpdateUserInformation(data));
-    else dispatch(callApiPostUserInformation(data));
+    else
+      dispatch(callApiPostUserInformation(data)).then((result: any) => {
+        console.log("🚀 ~ file: index.tsx:140 ~ dispatch ~ result:", result);
+        if (result?.payload?.status === 201) navigate("/");
+      });
   };
 
   return (

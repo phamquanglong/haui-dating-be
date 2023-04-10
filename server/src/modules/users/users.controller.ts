@@ -33,10 +33,10 @@ export class UsersController {
     return request.user;
   }
 
-  @Get(':id')
+  @Get('suggest')
   @UseGuards(JwtGuard)
-  getUserById(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getUser({ id });
+  getUserSuggest(@Req() request: Request & { user: User }) {
+    return this.userService.getAllUserSuggest(request.user);
   }
 
   @Post('information')

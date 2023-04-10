@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RegisterDto } from '../auth/dto/auth.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { Gender as SettingsGender } from '../user-settings/user-settings.entity';
 import { ProfileService } from '../profile/profile.service';
 import { UserHobbies } from '../user-hobbies/user-hobbies.entity';
 import { UserHobbiesService } from '../user-hobbies/user-hobbies.service';
@@ -11,6 +12,7 @@ import { UserImagesService } from '../user-images/user-images.service';
 import { UserSettingsService } from '../user-settings/user-settings.service';
 import { UserInformationRequestDto } from './dto/user-information.dto';
 import { User } from './user.entity';
+import { getDistanceFromLatLonInKm } from 'src/utils/helper';
 
 @Injectable()
 export class UsersService {
@@ -25,9 +27,50 @@ export class UsersService {
   ) {}
 
   async getAll() {
+    // await this.usersRepository.delete({ id: 4 });
     return await this.usersRepository.find({
       relations: ['profile', 'images', 'settings', 'userHobbies'],
     });
+  }
+
+  async getAllUserSuggest(currentUser: User) {
+    return await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.profile', 'profile')
+      .leftJoinAndSelect('user.userHobbies', 'userHobbies')
+      .leftJoinAndSelect('user.settings', 'userSettings')
+      .leftJoinAndSelect('user.images', 'userImages')
+      .where(
+        `user.id <> :userId ${
+          currentUser.settings.gender === SettingsGender.ALL
+            ? ''
+            : 'AND profile.gender = :gender'
+        }`,
+        { userId: currentUser.id, gender: currentUser.settings.gender },
+      )
+      .andWhere(
+        `((SELECT DATE_PART('year', now()::date) - DATE_PART('year', profile.birthday::date)) BETWEEN :fromOld AND :toOld) `,
+        {
+          fromOld: currentUser.settings.old[0],
+          toOld: currentUser.settings.old[1],
+          latitude: currentUser.profile.latitude,
+          longitude: currentUser.profile.longitude,
+        },
+      )
+      .andWhere(
+        ` acos(
+                sin((:latitude::float*pi()/180)) * sin((profile.latitude::float*pi()/180)) 
+                + cos((:latitude::float*pi()/180)) * cos((profile.latitude::float*pi()/180)) * cos(((:longitude::float - profile.longitude::float) * pi()/180))) 
+                * 180/pi()* 60 * 1.1515 * 1.609344
+                BETWEEN :fromDistance AND :toDistance`,
+        {
+          fromDistance: currentUser.settings.distance[0],
+          toDistance: currentUser.settings.distance[1],
+          latitude: currentUser.profile.latitude,
+          longitude: currentUser.profile.longitude,
+        },
+      )
+      .getMany();
   }
 
   async getUser(obj: { id?: number; userName?: string }) {
