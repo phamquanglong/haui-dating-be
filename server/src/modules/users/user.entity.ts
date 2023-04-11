@@ -6,6 +6,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Profile } from '../profile/profile.entity';
+import { UserActions } from '../user-actions/user-actions.entity';
 import { UserHobbies } from '../user-hobbies/user-hobbies.entity';
 import { UserImage } from '../user-images/user-images.entity';
 import { UserSetting } from '../user-settings/user-settings.entity';
@@ -47,4 +48,10 @@ export class User {
 
   @OneToMany(() => UserHobbies, (userHobbies) => userHobbies.user)
   userHobbies: UserHobbies[];
+
+  @OneToMany(() => UserActions, (userAction) => userAction.user)
+  userActionUser: UserActions[];
+
+  @OneToMany(() => UserHobbies, (userHobbies) => userHobbies.user)
+  userActionTarget: UserActions[];
 }

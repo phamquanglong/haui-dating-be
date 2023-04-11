@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from '../users/user.entity';
 
 export enum Action {
   LIKE = 'like',
@@ -10,12 +11,6 @@ export class UserActions {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  userId: number;
-
-  @Column()
-  targetId: number;
-
   @Column({ type: 'enum', enum: Action })
   action: Action;
 
@@ -24,4 +19,10 @@ export class UserActions {
 
   @Column({ default: new Date() })
   updatedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.userActionUser)
+  user: User;
+
+  @ManyToOne(() => User, (user) => user.userActionTarget)
+  targetUser: User;
 }
