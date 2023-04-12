@@ -1,20 +1,22 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { Message } from '../messages/messages.entity';
+import { User } from '../users/user.entity';
 
 @Entity('Conversation')
 export class Conversation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  userOne: number;
+  @Column({ nullable: true })
+  latestMessage?: string;
 
-  @Column()
-  userTwo: number;
-
-  @Column()
-  latestMessage: string;
-
-  @Column()
+  @Column({ default: true })
   isActive?: boolean;
 
   @Column({ default: new Date() })
@@ -22,4 +24,13 @@ export class Conversation {
 
   @Column({ default: new Date() })
   updatedAt?: Date;
+
+  @ManyToOne(() => User, (user) => user.conversationUserOne)
+  userOne: User;
+
+  @ManyToOne(() => User, (user) => user.conversationUserTwo)
+  userTwo: User;
+
+  @OneToMany(() => Message, (messages) => messages.sender)
+  messages: Message[];
 }

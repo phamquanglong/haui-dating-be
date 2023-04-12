@@ -5,6 +5,8 @@ import {
   OneToMany,
   OneToOne,
 } from 'typeorm';
+import { Conversation } from '../conversations/conversations.entity';
+import { Message } from '../messages/messages.entity';
 import { Profile } from '../profile/profile.entity';
 import { UserActions } from '../user-actions/user-actions.entity';
 import { UserHobbies } from '../user-hobbies/user-hobbies.entity';
@@ -54,4 +56,13 @@ export class User {
 
   @OneToMany(() => UserHobbies, (userHobbies) => userHobbies.user)
   userActionTarget: UserActions[];
+
+  @OneToMany(() => Conversation, (conversation) => conversation.userOne)
+  conversationUserOne: Conversation[];
+
+  @OneToMany(() => Conversation, (conversation) => conversation.userTwo)
+  conversationUserTwo: Conversation[];
+
+  @OneToMany(() => Message, (messages) => messages.sender)
+  messages: Message[];
 }

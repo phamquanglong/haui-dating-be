@@ -27,7 +27,6 @@ export class UsersService {
   ) {}
 
   async getAll() {
-    // await this.usersRepository.delete({ id: 4 });
     return await this.usersRepository.find({
       relations: ['profile', 'images', 'settings', 'userHobbies'],
     });
