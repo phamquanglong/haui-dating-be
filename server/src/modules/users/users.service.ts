@@ -157,18 +157,20 @@ export class UsersService {
     );
 
     // delete old user images
-    await Promise.all(
-      user.images.map(
-        async (userImage: UserImage) =>
-          await this.userImageService.delete(userImage.id),
-      ),
-    );
+    if (imagesReq) {
+      await Promise.all(
+        user.images.map(
+          async (userImage: UserImage) =>
+            await this.userImageService.delete(userImage.id),
+        ),
+      );
 
-    const images = await Promise.all(
-      imagesReq.map(
-        async (el) => await this.userImageService.create({ imageUrl: el }),
-      ),
-    );
+      var images = await Promise.all(
+        imagesReq.map(
+          async (el) => await this.userImageService.create({ imageUrl: el }),
+        ),
+      );
+    }
 
     // delete old user hobbies
     await Promise.all(
@@ -187,7 +189,7 @@ export class UsersService {
     const updatedUser = await this.updateUser(userId, {
       userHobbies,
       profile,
-      images,
+      ...(imagesReq && { images }),
       settings,
     });
 

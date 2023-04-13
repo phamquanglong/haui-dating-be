@@ -18,20 +18,20 @@ const ChooseImg = ({ formRef }: { formRef: any }) => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((state) => state.userReducer.loadingUpload);
   const image = useAppSelector((state) => state.userReducer.imageUrl);
+  console.log("🚀 ~ file: ChooseImg.tsx:21 ~ ChooseImg ~ image:", image);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
-  const user = useAppSelector((state) => state.authReducer.user);
-  const [isUpdate] = useState(user?.profile ? true : false);
 
   useEffect(() => {
-    if (image?.url && !isUpdate)
+    if (image?.url && !loading) {
       formRef?.setFieldValue("images", [
         ...formRef?.getFieldValue("images"),
         image?.url,
       ]);
-  }, [image, formRef, isUpdate]);
+    }
+  }, [image, formRef, loading]);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     dispatch(

@@ -49,7 +49,7 @@ const Setting = () => {
           </Col>
 
           <Col lg={24}>
-            <Form.Item label="Gender" name="settingGender">
+            <Form.Item label="Show me" name="settingGender">
               <Radio.Group value="male">
                 <Radio.Button value="male">Male</Radio.Button>
                 <Radio.Button value="female">Female</Radio.Button>

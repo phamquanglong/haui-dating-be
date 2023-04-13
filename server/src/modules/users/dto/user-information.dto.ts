@@ -59,19 +59,14 @@ class SettingsDto {
 export class UserInformationRequestDto {
   @ValidateNested({ each: true })
   @Type(() => ProfileDto)
-  profile: ProfileDto[];
+  profile?: ProfileDto[];
 
-  @IsArray()
   @IsNumber({}, { each: true })
-  @IsNotEmpty()
-  hobbies: number[];
+  hobbies?: number[];
 
-  @IsArray()
-  @IsString({ each: true })
-  @IsNotEmpty()
-  images: string[];
+  images?: string[];
 
   @ValidateNested({ each: true })
   @Type(() => SettingsDto)
-  settings: SettingsDto[];
+  settings?: SettingsDto[];
 }

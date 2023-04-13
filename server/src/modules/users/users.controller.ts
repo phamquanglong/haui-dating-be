@@ -2,8 +2,7 @@ import {
   Body,
   Controller,
   Get,
-  Param,
-  ParseIntPipe,
+  Patch,
   Post,
   Put,
   Req,
@@ -48,7 +47,7 @@ export class UsersController {
     return this.userService.createInformation(request.user.id, body);
   }
 
-  @Put('information')
+  @Patch('information')
   @UseGuards(JwtGuard)
   updateInformation(
     @Body() body: UserInformationRequestDto,

@@ -34,6 +34,6 @@ export default class UserApi {
   static updateUserInformation(
     body: IUpdateUserInformationRequest
   ): Promise<AxiosResponse<IUser>> {
-    return ApiService.put("users/information", body);
+    return ApiService.patch("users/information", body);
   }
 }

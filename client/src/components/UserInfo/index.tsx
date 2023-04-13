@@ -6,7 +6,10 @@ import ChooseImg from "./ChooseImg";
 import Setting from "./Setting";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { callApiGetAllHobby } from "../../reducer/hobby.reducer";
-import { IUserInformationRequest } from "../../interface/User";
+import {
+  IUserInformationRequest,
+  IUpdateUserInformationRequest,
+} from "../../interface/User";
 import dayjs from "dayjs";
 import {
   callApiPostUserInformation,
@@ -14,6 +17,7 @@ import {
 } from "../../reducer/user.reducer";
 import { useAppSelector } from "../../hook/useAppSelector";
 import { useNavigate } from "react-router-dom";
+import { callApiGetInfo } from "../../reducer/auth.reducer";
 
 const Info = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();
@@ -77,7 +81,7 @@ const Info = ({ className }: { className?: string }) => {
     },
   ];
   const { token } = theme.useToken();
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState<number>(0);
 
   const next = () => {
     const data = formRef.getFieldsValue();
@@ -89,7 +93,7 @@ const Info = ({ className }: { className?: string }) => {
         data.bio &&
         current === 0) ||
       (data.hobbies.length > 0 && current === 1) ||
-      (data.images.length > 0 && current === 2)
+      current === 2
     )
       setCurrent(current + 1);
     else message.error("Please complete all information.");
@@ -130,10 +134,36 @@ const Info = ({ className }: { className?: string }) => {
         old: value.settingOld,
       },
     };
-    if (isUpdate) dispatch(callApiUpdateUserInformation(data));
-    else
+    if (isUpdate) {
+      const dataUpdate: IUpdateUserInformationRequest = {
+        profile: {
+          fullName: value.firstName + " " + value.lastName,
+          gender: value.gender,
+          birthday: dayjs(value.birthday).format("YYYY/MM/DD"),
+          bio: value.bio,
+          reputational: 10,
+          latitude: location.latitude,
+          longitude: location.longitude,
+        },
+        hobbies: value.hobbies,
+        images: value.images,
+        settings: {
+          distance: value.settingDistance,
+          gender: value.settingGender,
+          old: value.settingOld,
+        },
+      };
+      dataUpdate.images?.length === 0 && delete dataUpdate.images;
+      dispatch(callApiUpdateUserInformation(dataUpdate)).then((result: any) => {
+        if (result.payload?.response?.status !== 400) {
+          message.success("Update information successfully.");
+          dispatch(callApiGetInfo());
+        } else message.error("Update information fail.");
+      });
+    } else
       dispatch(callApiPostUserInformation(data)).then((result: any) => {
-        console.log("🚀 ~ file: index.tsx:140 ~ dispatch ~ result:", result);
+        message.success("Update information successfully.");
+        dispatch(callApiGetInfo());
         if (result?.payload?.status === 201) navigate("/");
       });
   };
