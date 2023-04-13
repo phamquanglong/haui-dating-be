@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleSubmit = (value) => {
     dispatch(callApiLogin({ ...value })).then((result) => {
-      if (result?.payload?.response?.status !== 400)
+      if (result?.payload?.status === 201)
         message.success("Login successfully.", 2);
 
       return;

@@ -36,4 +36,8 @@ export default class UserApi {
   ): Promise<AxiosResponse<IUser>> {
     return ApiService.patch("users/information", body);
   }
+
+  static getSuggestUser(): Promise<AxiosResponse<IUser[]>> {
+    return ApiService.get("users/suggest");
+  }
 }

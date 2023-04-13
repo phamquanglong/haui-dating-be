@@ -26,6 +26,13 @@ export class UserActionsService {
     });
   }
 
+  async getAllActionOfUser(userId: number) {
+    return await this.userActionsRepository.find({
+      where: { user: { id: userId } },
+      relations: ['targetUser'],
+    });
+  }
+
   async getHistory(userId: number, { type }: UserActionQueryDto) {
     if (type === TYPE.LIKED)
       return await this.userActionsRepository

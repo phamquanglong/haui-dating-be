@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { RegisterDto } from '../auth/dto/auth.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Gender as SettingsGender } from '../user-settings/user-settings.entity';
@@ -12,7 +12,6 @@ import { UserImagesService } from '../user-images/user-images.service';
 import { UserSettingsService } from '../user-settings/user-settings.service';
 import { UserInformationRequestDto } from './dto/user-information.dto';
 import { User } from './user.entity';
-import { getDistanceFromLatLonInKm } from 'src/utils/helper';
 
 @Injectable()
 export class UsersService {
@@ -33,6 +32,13 @@ export class UsersService {
   }
 
   async getAllUserSuggest(currentUser: User) {
+    const currentUserWithUserActions = await this.usersRepository.findOne({
+      where: { id: currentUser.id },
+      relations: ['userActionUser', 'userActionUser.targetUser'],
+    });
+    const suggestedUsers = currentUserWithUserActions.userActionUser.map(
+      (el) => el.targetUser.id,
+    );
     return await this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.profile', 'profile')
@@ -47,6 +53,7 @@ export class UsersService {
         }`,
         { userId: currentUser.id, gender: currentUser.settings.gender },
       )
+      .andWhere({ id: Not(In(suggestedUsers)) })
       .andWhere(
         `((SELECT DATE_PART('year', now()::date) - DATE_PART('year', profile.birthday::date)) BETWEEN :fromOld AND :toOld) `,
         {
@@ -58,8 +65,8 @@ export class UsersService {
       )
       .andWhere(
         ` acos(
-                sin((:latitude::float*pi()/180)) * sin((profile.latitude::float*pi()/180)) 
-                + cos((:latitude::float*pi()/180)) * cos((profile.latitude::float*pi()/180)) * cos(((:longitude::float - profile.longitude::float) * pi()/180))) 
+                sin((:latitude::float*pi()/180)) * sin((profile.latitude::float*pi()/180))
+                + cos((:latitude::float*pi()/180)) * cos((profile.latitude::float*pi()/180)) * cos(((:longitude::float - profile.longitude::float) * pi()/180)))
                 * 180/pi()* 60 * 1.1515 * 1.609344
                 BETWEEN :fromDistance AND :toDistance`,
         {
@@ -158,12 +165,13 @@ export class UsersService {
 
     // delete old user images
     if (imagesReq) {
-      await Promise.all(
-        user.images.map(
-          async (userImage: UserImage) =>
-            await this.userImageService.delete(userImage.id),
-        ),
-      );
+      imagesReq.length > 0 &&
+        (await Promise.all(
+          user.images.map(
+            async (userImage: UserImage) =>
+              await this.userImageService.delete(userImage.id),
+          ),
+        ));
 
       var images = await Promise.all(
         imagesReq.map(

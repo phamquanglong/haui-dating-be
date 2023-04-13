@@ -14,5 +14,6 @@ import { UserActionsService } from './user-actions.service';
   ],
   controllers: [UserActionsController],
   providers: [UserActionsService],
+  exports: [UserActionsService],
 })
 export class UserActionsModule {}
