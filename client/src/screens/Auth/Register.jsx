@@ -18,7 +18,7 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-red-50 h-screen flex justify-center items-center ">
+    <div className="bg-gradient-to-r to-primaryColor from-red-400 h-screen flex justify-center items-center ">
       <div className="w-screen md:w-2/3 h-screen md:h-3/4 md:rounded-lg flex md:shadow-2xl md:shadow-red-500/40">
         <div className="w-3/5 h-full">
           <img
@@ -27,7 +27,7 @@ const Register = () => {
             alt="img"
           />
         </div>
-        <div className="w-2/5 h-full bg-white rounded-none rounded-r-lg flex justify-center items-start">
+        <div className="w-2/5 h-full bg-white rounded-none rounded-r-lg flex justify-center items-start overflow-y-scroll">
           <div className="w-2/3 md:w-4/5 flex-col justify-center items-center mt-14 ">
             <h1 className="text-center font-semibold md:text-3xl">
               HaUI Dating
@@ -110,10 +110,10 @@ const Register = () => {
 
               <Form.Item className="mt-8">
                 <Button
-                  className="w-full"
+                  className="w-full border-none bg-gradient-to-r from-primaryColor to-red-400 "
                   type="primary"
                   htmlType="submit"
-                  danger
+                  // danger
                 >
                   Register
                 </Button>

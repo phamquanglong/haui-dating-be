@@ -30,7 +30,7 @@ const Header = () => {
   };
 
   return (
-    <div className="h-full w-full bg-gradient-to-r from-primaryColor to-rose-500 px-6 flex justify-between items-center">
+    <div className="h-full w-full bg-gradient-to-r to-primaryColor from-red-400 px-6 flex justify-between items-center">
       <div className="flex items-center">
         <Avatar
           shape="circle"
