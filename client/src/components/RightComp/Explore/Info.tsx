@@ -1,7 +1,6 @@
 import React from "react";
 import { Carousel } from "antd";
 import { IUser } from "../../../interface/User";
-import dayjs from "dayjs";
 import { getDistanceFromLatLonInKm, getUserOld } from "../../../utils";
 import { useAppSelector } from "../../../hook/useAppSelector";
 
@@ -37,6 +36,7 @@ const Info = ({ userData }: { userData?: IUser }) => {
             <img
               className="w-full h-full object-cover rounded-xl pointer-events-none"
               src={image.imageUrl}
+              alt={image.imageUrl}
             ></img>
           </div>
         ))}

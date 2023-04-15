@@ -43,7 +43,7 @@ const Header = () => {
           className="border-[1.5px] border-white"
         />
         <h3 className="text-xl ml-2 text-red-50">
-          {user?.userName || "Welcome to HaUI Dating"}
+          {user?.profile?.fullName || "Welcome to HaUI Dating"}
         </h3>
       </div>
       <div className="flex">

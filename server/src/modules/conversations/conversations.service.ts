@@ -18,7 +18,14 @@ export class ConversationsService {
         { userOne: { id: userId }, isActive: true },
         { userTwo: { id: userId }, isActive: true },
       ],
-      relations: ['userOne', 'userTwo', 'userOne.images', 'userTwo.images'],
+      relations: [
+        'userOne',
+        'userTwo',
+        'userOne.images',
+        'userTwo.images',
+        'userOne.profile',
+        'userTwo.profile',
+      ],
       order: { updatedAt: 'DESC' },
     });
   }
@@ -34,7 +41,14 @@ export class ConversationsService {
   async getConversationById(id: number) {
     return await this.conversationRepository.findOne({
       where: { id },
-      relations: ['userOne', 'userTwo', 'userOne.images', 'userTwo.images'],
+      relations: [
+        'userOne',
+        'userTwo',
+        'userOne.images',
+        'userTwo.images',
+        'userOne.profile',
+        'userTwo.profile',
+      ],
     });
   }
 

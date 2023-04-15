@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { LIST_RANDOM_COLOR } from "./config/constant";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 export const uuid = (): string => {
@@ -76,3 +77,6 @@ export const getUserOld = (birthday: string) => {
   dayjs.extend(relativeTime);
   return dayjs(birthday).fromNow().split(" ")[0];
 };
+
+export const getRandomColor = () =>
+  LIST_RANDOM_COLOR[Math.floor(Math.random() * LIST_RANDOM_COLOR.length)];

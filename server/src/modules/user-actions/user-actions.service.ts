@@ -5,6 +5,7 @@ import { ConversationsService } from '../conversations/conversations.service';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import {
+  Action,
   TYPE,
   UserActionQueryDto,
   UserActionRequestDto,
@@ -35,42 +36,61 @@ export class UserActionsService {
 
   async getHistory(userId: number, { type }: UserActionQueryDto) {
     if (type === TYPE.LIKED)
-      return await this.userActionsRepository
-        .createQueryBuilder('userActions')
-        .leftJoinAndSelect('userActions.user', 'user.userActionUser')
-        .leftJoinAndSelect('userActions.targetUser', 'user.userActionTarget')
-        .where(
-          `userActions.user.id = :userId AND userActions.action = 'like'`,
-          {
-            userId: userId,
-          },
-        )
-        .getMany();
+      return await this.userActionsRepository.find({
+        where: {
+          user: { id: userId },
+          action: Action.LIKE,
+        },
+        relations: [
+          'user',
+          'targetUser',
+          'targetUser.profile',
+          'targetUser.userHobbies',
+          'targetUser.userHobbies.hobby',
+          'targetUser.images',
+        ],
+      });
     if (type === TYPE.DISLIKED)
-      return await this.userActionsRepository
-        .createQueryBuilder('userActions')
-        .leftJoinAndSelect('userActions.user', 'user.userActionUser')
-        .leftJoinAndSelect('userActions.targetUser', 'user.userActionTarget')
-        .where(
-          `userActions.user.id = :userId AND userActions.action = 'dislike'`,
-          {
-            userId: userId,
-          },
-        )
-        .getMany();
-
+      return await this.userActionsRepository.find({
+        where: {
+          user: { id: userId },
+          action: Action.DISLIKE,
+        },
+        relations: [
+          'user',
+          'targetUser',
+          'targetUser.profile',
+          'targetUser.userHobbies',
+          'targetUser.userHobbies.hobby',
+          'targetUser.images',
+        ],
+      });
     if (type === TYPE.LIKED_ME)
-      return await this.userActionsRepository
-        .createQueryBuilder('userActions')
-        .leftJoinAndSelect('userActions.user', 'user.userActionUser')
-        .leftJoinAndSelect('userActions.targetUser', 'user.userActionTarget')
-        .where(
-          `userActions.targetUser.id = :targetUserId AND userActions.action = 'like'`,
-          {
-            targetUserId: userId,
-          },
-        )
-        .getMany();
+      return await this.userActionsRepository.find({
+        where: {
+          targetUser: { id: userId },
+          action: Action.LIKE,
+        },
+        relations: [
+          'user',
+          'targetUser',
+          'user.profile',
+          'user.userHobbies',
+          'user.userHobbies.hobby',
+          'user.images',
+        ],
+      });
+    return await this.userActionsRepository
+      .createQueryBuilder('userActions')
+      .leftJoinAndSelect('userActions.user', 'user.userActionUser')
+      .leftJoinAndSelect('userActions.targetUser', 'user.userActionTarget')
+      .where(
+        `userActions.targetUser.id = :targetUserId AND userActions.action = 'like'`,
+        {
+          targetUserId: userId,
+        },
+      )
+      .getMany();
   }
 
   async create(user: User, body: UserActionRequestDto) {

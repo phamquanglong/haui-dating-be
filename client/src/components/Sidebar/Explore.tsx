@@ -14,10 +14,10 @@ const Explore = () => {
   return (
     <div className="h-full w-full bg-red-100 px-8 flex items-center">
       <CircleButton
-        className="border-rose-500 border-[4px] w-20 h-20 bg-red-50 flex-shrink-0"
+        className="border-primaryColor border-[4px] w-20 h-20 bg-red-50 flex-shrink-0"
         onClick={handleExplore}
       >
-        <TbCards className="text-rose-500 font-medium text-5xl" />
+        <TbCards className="text-primaryColor font-medium text-5xl" />
       </CircleButton>
       <div className="ml-6">
         <h5 className="font-bold text-xl">Explore New Matches</h5>

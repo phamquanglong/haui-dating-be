@@ -1,33 +1,43 @@
 import { Card } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch } from "../../../hook/useAppDispatch";
+import { TypeHistory } from "../../../interface/user-actions";
+import { callApiGetHistory } from "../../../reducer/user-actions.reducer";
 import ListPeople from "./ListPeople";
 
-const tabListNoTitle = [
-  {
-    key: "likeMe",
-    tab: "Who liked me",
-  },
-  {
-    key: "liked",
-    tab: "Liked",
-  },
-  {
-    key: "disliked",
-    tab: "Disliked",
-  },
-];
-
-const contentListNoTitle: Record<string, React.ReactNode> = {
-  likeMe: <ListPeople />,
-  liked: <p>app content</p>,
-  disliked: <p>project content</p>,
-};
-
 const Like: React.FC = () => {
-  const [activeTabKey2, setActiveTabKey2] = useState<string>("likeMe");
+  const dispatch = useAppDispatch();
+  const [activeTabKey, setActiveTabKey2] = useState<string>(
+    TypeHistory.LIKED_ME
+  );
 
-  const onTab2Change = (key: string) => {
+  const onTabChange = (key: string) => {
     setActiveTabKey2(key);
+  };
+
+  useEffect(() => {
+    dispatch(callApiGetHistory(activeTabKey));
+  }, [dispatch, activeTabKey]);
+
+  const tabListNoTitle = [
+    {
+      key: TypeHistory.LIKED_ME,
+      tab: "Liked me",
+    },
+    {
+      key: TypeHistory.LIKED,
+      tab: "Liked",
+    },
+    {
+      key: TypeHistory.DISLIKED,
+      tab: "Disliked",
+    },
+  ];
+
+  const contentListNoTitle: Record<string, React.ReactNode> = {
+    "liked-me": <ListPeople type={activeTabKey} />,
+    liked: <ListPeople type={activeTabKey} />,
+    disliked: <ListPeople type={activeTabKey} />,
   };
 
   return (
@@ -35,10 +45,10 @@ const Like: React.FC = () => {
       loading={false}
       className="w-full h-full shadow-lg"
       tabList={tabListNoTitle}
-      activeTabKey={activeTabKey2}
-      onTabChange={onTab2Change}
+      activeTabKey={activeTabKey}
+      onTabChange={onTabChange}
     >
-      {contentListNoTitle[activeTabKey2]}
+      {contentListNoTitle[activeTabKey]}
     </Card>
   );
 };

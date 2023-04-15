@@ -43,6 +43,7 @@ export class UsersService {
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.profile', 'profile')
       .leftJoinAndSelect('user.userHobbies', 'userHobbies')
+      .leftJoinAndSelect('userHobbies.hobby', 'hobbies')
       .leftJoinAndSelect('user.settings', 'userSettings')
       .leftJoinAndSelect('user.images', 'userImages')
       .where(
