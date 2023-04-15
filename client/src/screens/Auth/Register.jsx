@@ -19,7 +19,7 @@ const Register = () => {
 
   return (
     <div className="bg-gradient-to-r to-primaryColor from-red-400 h-screen flex justify-center items-center ">
-      <div className="w-screen md:w-2/3 h-screen md:h-3/4 md:rounded-lg flex md:shadow-2xl md:shadow-red-500/40">
+      <div className="w-screen md:w-5/6 h-screen md:h-5/6 md:rounded-lg flex md:shadow-2xl md:shadow-red-500/40">
         <div className="w-3/5 h-full">
           <img
             className="w-full h-full object-cover rounded-l-lg"
@@ -28,8 +28,9 @@ const Register = () => {
           />
         </div>
         <div className="w-2/5 h-full bg-white rounded-none rounded-r-lg flex justify-center items-start overflow-y-scroll">
-          <div className="w-2/3 md:w-4/5 flex-col justify-center items-center mt-14 ">
-            <h1 className="text-center font-semibold md:text-3xl">
+          <div className="w-2/3 md:w-2/3 flex-col justify-center items-center mt-14 ">
+            <div className="m-auto bg-[url('https://inkythuatso.com/uploads/images/2021/12/logo-dai-hoc-cong-nghiep-ha-noi-inkythuatso-01-21-15-51-20.jpg')] w-[64px] h-[64px] bg-cover"></div>
+            <h1 className="text-center font-semibold md:text-3xl mt-1">
               HaUI Dating
             </h1>
             <p className="text-xs md:text-sm text-slate-600 mt-2 text-center">
@@ -37,7 +38,7 @@ const Register = () => {
             </p>
             <Form
               form={formRef}
-              className="mt-0 w-full"
+              className="-mt-2 w-full"
               layout="vertical"
               style={{ maxWidth: 600 }}
               size="large"
@@ -108,7 +109,7 @@ const Register = () => {
                 <Input />
               </Form.Item>
 
-              <Form.Item className="mt-8">
+              <Form.Item className="mt-0">
                 <Button
                   className="w-full border-none bg-gradient-to-r from-primaryColor to-red-400 "
                   type="primary"
@@ -120,7 +121,7 @@ const Register = () => {
               </Form.Item>
             </Form>
 
-            <div className="flex justify-between mt-0">
+            <div className="flex justify-between -mt-2">
               <p>You have an account ?</p>
               <Link to="/login">
                 <Button type="link" className="-mt-2" danger>

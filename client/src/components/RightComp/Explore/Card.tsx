@@ -4,7 +4,9 @@ import Info from "./Info";
 // import { CloseOutlined, HeartFilled } from "@ant-design/icons";
 import MoreInfo from "./MoreInfo";
 import { KEY_CODE } from "../../../config/constant";
+import CircleButton from "../../Button/CircleButton";
 // import { useAppDispatch } from "../../../hook/useAppDispatch";
+import { BsArrowUp, BsArrowDown } from "react-icons/bs";
 
 const Card = ({
   userData,
@@ -29,11 +31,31 @@ const Card = ({
       tabIndex={0}
       onKeyDown={(e) => onKeyDown(e)}
     >
-      {isShowMore === KEY_CODE.ARROW_DOWN ? (
-        <Info userData={userData} />
-      ) : (
-        <MoreInfo userData={userData} />
-      )}
+      <Info
+        userData={userData}
+        className={isShowMore === KEY_CODE?.ARROW_DOWN ? "" : "hidden"}
+      />
+      <MoreInfo
+        userData={userData}
+        className={isShowMore === KEY_CODE?.ARROW_UP ? "" : "hidden"}
+      />
+      <CircleButton
+        className="absolute top-2 right-2 z-[10]"
+        onClick={() => {
+          console.log("test");
+          setShowMore(
+            isShowMore === KEY_CODE.ARROW_DOWN
+              ? KEY_CODE.ARROW_UP
+              : KEY_CODE.ARROW_DOWN
+          );
+        }}
+      >
+        {isShowMore === KEY_CODE.ARROW_DOWN ? (
+          <BsArrowDown className="text-white font-black text-xl" />
+        ) : (
+          <BsArrowUp className="text-white font-black text-xl" />
+        )}
+      </CircleButton>
       {/* <div className="w-full h-[20%] absolute bottom-0 flex justify-around items-center px-10">
         <CircleButton
           className="border-none shadow-2xl bg-primaryColor w-20 h-20 z-[1]"

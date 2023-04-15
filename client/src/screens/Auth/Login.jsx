@@ -20,7 +20,7 @@ const Login = () => {
   return (
     <div className="bg-gradient-to-r to-primaryColor from-red-400 h-screen flex justify-center items-center ">
       {/* <div className="bg-[url('https://dean1665.vn/uploads/school/t78758.jpg')] bg-no-repeat bg-cover backdrop-blur-md h-screen flex justify-center items-center "> */}
-      <div className="w-screen md:w-2/3 h-screen md:h-3/4 md:rounded-lg flex md:shadow-2xl md:shadow-red-500/40">
+      <div className="w-screen md:w-5/6 h-screen md:h-5/6 md:rounded-lg flex md:shadow-2xl md:shadow-red-500/40">
         <div className="w-3/5 h-full">
           <img
             className="w-full h-full object-cover rounded-l-lg"
@@ -30,7 +30,8 @@ const Login = () => {
           />
         </div>
         <div className="w-2/5 h-full bg-white rounded-none rounded-r-lg flex justify-center items-start">
-          <div className="w-2/3 md:w-4/5 flex-col justify-center items-center mt-14 ">
+          <div className="w-2/3 md:w-2/3 flex-col justify-center items-center mt-14 ">
+            <div className="m-auto bg-[url('https://inkythuatso.com/uploads/images/2021/12/logo-dai-hoc-cong-nghiep-ha-noi-inkythuatso-01-21-15-51-20.jpg')] w-[64px] h-[64px] bg-cover"></div>
             <h1 className="text-center font-semibold md:text-3xl mt-1">
               HaUI Dating
             </h1>
