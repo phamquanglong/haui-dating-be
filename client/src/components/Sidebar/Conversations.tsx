@@ -10,6 +10,7 @@ import { actionSelectConversation } from "../../reducer/conversations.reducer";
 const Conversations = () => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.authReducer.user);
+  const component = useAppSelector((state) => state.layoutReducer.component);
   const listConversations = useAppSelector(
     (state) => state.conversationsReducer.listConversations
   );
@@ -53,12 +54,25 @@ const Conversations = () => {
               <List.Item
                 onClick={() => handleSelectConversation(item?.conv)}
                 className={`${
-                  item?.id === selectedConversation?.id ? "bg-red-50 " : ""
+                  item?.id === selectedConversation?.id &&
+                  component === CHATTING
+                    ? "bg-red-50 "
+                    : ""
                 } 
                 rounded-lg hover:bg-red-50`}
               >
                 <List.Item.Meta
-                  avatar={<Avatar className="w-20 h-20 ml-2" src={item.avt} />}
+                  avatar={
+                    <Avatar
+                      key={index}
+                      className="w-20 h-20 ml-2"
+                      src={
+                        item?.avt
+                          ? item?.avt
+                          : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
+                      }
+                    />
+                  }
                   title={
                     <h5 className="font-bold mt-4 text-xl">{item.title}</h5>
                   }

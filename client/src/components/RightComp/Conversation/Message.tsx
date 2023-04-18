@@ -1,7 +1,14 @@
 import React from "react";
 import { Avatar, Tooltip } from "antd";
+import dayjs from "dayjs";
 
-const Message = ({ isMyMessage = false }: { isMyMessage?: boolean }) => {
+const Message = ({
+  message,
+  isMyMessage,
+}: {
+  message: any;
+  isMyMessage?: boolean;
+}) => {
   return (
     <div
       className={`flex relative w-full my-[24px] ${
@@ -11,11 +18,21 @@ const Message = ({ isMyMessage = false }: { isMyMessage?: boolean }) => {
       {!isMyMessage && (
         <Avatar
           size={48}
-          src="https://picsum.photos/600/600"
           className="-mt-5 -ml-2 mr-2"
+          src={
+            message?.sender?.images?.length > 0
+              ? message?.sender?.images[0]?.imageUrl
+              : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
+          }
         />
       )}
-      <Tooltip title="11:56" placement={`${isMyMessage ? "left" : "right"}`}>
+      <Tooltip
+        title={
+          message?.createdAt &&
+          dayjs(message?.createdAt).format("HH:mm A DD-MM-YYYY")
+        }
+        placement={`${isMyMessage ? "left" : "right"}`}
+      >
         <div
           className={`relative right-0 max-w-[65%] p-3 ${
             isMyMessage
@@ -23,10 +40,7 @@ const Message = ({ isMyMessage = false }: { isMyMessage?: boolean }) => {
               : "bg-[#ddd] before:bfOtherMess ml-2 text-gray-600"
           }  rounded-[10px]`}
         >
-          <p className="text-sm md:text-base text-left">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam
-          </p>
+          <p className="text-sm md:text-base text-left">{message?.message}</p>
         </div>
       </Tooltip>
     </div>

@@ -10,10 +10,6 @@ import { useAppSelector } from "../../../hook/useAppSelector";
 import { GoLocation } from "react-icons/go";
 
 const DetailPartner = ({ userData }: { userData?: IUser }) => {
-  console.log(
-    "🚀 ~ file: DetailPartner.tsx:13 ~ DetailPartner ~ userData:",
-    userData
-  );
   const currentUser = useAppSelector((state) => state.authReducer.user);
 
   return (

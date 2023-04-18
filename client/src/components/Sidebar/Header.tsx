@@ -34,7 +34,7 @@ const Header = () => {
       <div className="flex items-center">
         <Avatar
           shape="circle"
-          size={48}
+          size={60}
           src={
             user?.profile !== null && !loading && user?.images?.length > 0
               ? user?.images[0]?.imageUrl

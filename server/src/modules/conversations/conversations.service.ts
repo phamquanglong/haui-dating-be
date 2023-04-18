@@ -26,7 +26,9 @@ export class ConversationsService {
         'userOne.profile',
         'userTwo.profile',
         'userOne.userHobbies',
+        'userOne.userHobbies.hobby',
         'userTwo.userHobbies',
+        'userTwo.userHobbies.hobby',
       ],
       order: { updatedAt: 'DESC' },
     });

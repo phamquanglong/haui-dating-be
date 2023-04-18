@@ -16,7 +16,8 @@ export class MessagesService {
   async getMessagesByConversationId(conversationId: number) {
     return await this.messagesRepository.find({
       where: { conversation: { id: conversationId } },
-      relations: ['sender'],
+      relations: ['sender', 'sender.images'],
+      order: { createdAt: 'asc' },
     });
   }
 

@@ -13,6 +13,7 @@ const ListPeople = ({ type }: { type: string }) => {
       {listTargetUsers?.map((el: any) => (
         <div className="w-[380px] h-[570px] overflow-y-scroll border-[1px] rounded-xl">
           <DetailPartner
+            key={el?.id}
             userData={type === TypeHistory.LIKED_ME ? el.user : el.targetUser}
           />
         </div>
