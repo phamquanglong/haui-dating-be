@@ -24,7 +24,6 @@ const Explore = () => {
   }, [dispatch]);
 
   const [currentIndex, setCurrentIndex] = useState(listSuggestUsers.length - 1);
-  const [, setLastDirection] = useState();
 
   // used for outOfFrame closure
   const currentIndexRef = useRef(currentIndex);
@@ -48,12 +47,15 @@ const Explore = () => {
         action: direction === "right" ? "like" : "dislike",
         targetUserId: nameToDelete,
       })
-    ).then(() => {
-      dispatch(callApiGetSuggestUsers());
-      dispatch(callApiGetInfo());
-      dispatch(callApiGetAllConversations());
+    ).then((result: any) => {
+      if (!result?.payload?.data) {
+        console.log("🚀 ~ file: index.tsx:60 ~ ).then ~ result:", result);
+        dispatch(callApiGetSuggestUsers());
+        dispatch(callApiGetInfo());
+        dispatch(callApiGetAllConversations());
+      }
     });
-    setLastDirection(direction);
+
     updateCurrentIndex(index - 1);
   };
 

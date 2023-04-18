@@ -27,7 +27,7 @@ const Card = ({
 
   return (
     <div
-      className={`${width} ${height} hover:cursor-grab relative `}
+      className={`${width} ${height} hover:cursor-grab relative bg-white`}
       tabIndex={0}
       onKeyDown={(e) => onKeyDown(e)}
     >

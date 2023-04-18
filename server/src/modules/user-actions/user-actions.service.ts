@@ -49,6 +49,7 @@ export class UserActionsService {
           'targetUser.userHobbies.hobby',
           'targetUser.images',
         ],
+        order: { createdAt: 'DESC' },
       });
     if (type === TYPE.DISLIKED)
       return await this.userActionsRepository.find({
@@ -64,6 +65,7 @@ export class UserActionsService {
           'targetUser.userHobbies.hobby',
           'targetUser.images',
         ],
+        order: { createdAt: 'DESC' },
       });
     if (type === TYPE.LIKED_ME)
       return await this.userActionsRepository.find({
@@ -79,6 +81,7 @@ export class UserActionsService {
           'user.userHobbies.hobby',
           'user.images',
         ],
+        order: { createdAt: 'DESC' },
       });
     return await this.userActionsRepository
       .createQueryBuilder('userActions')
@@ -99,6 +102,18 @@ export class UserActionsService {
     });
 
     if (!targetUser) throw new BadRequestException('Target user not found.');
+
+    const isExist = await this.userActionsRepository.findOne({
+      where: { user: { id: user.id }, targetUser: { id: targetUser.id } },
+    });
+
+    if (isExist) {
+      console.log(
+        '🚀 ~ file: user-actions.service.ts:108 ~ UserActionsService ~ create ~ isExist:',
+        isExist,
+      );
+      return undefined;
+    }
 
     const isMatch = await this.userActionsRepository
       .createQueryBuilder('userActions')
