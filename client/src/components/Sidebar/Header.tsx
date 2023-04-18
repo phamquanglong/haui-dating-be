@@ -8,7 +8,7 @@ import React from "react";
 import { LIKE, SETTING } from "../../config/constant";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { useAppSelector } from "../../hook/useAppSelector";
-import { logoutAction } from "../../reducer/auth.reducer";
+import { actionLogout } from "../../reducer/auth.reducer";
 import { setComponentAction } from "../../reducer/layout.reducer";
 import CircleButton from "../Button/CircleButton";
 
@@ -18,7 +18,7 @@ const Header = () => {
   const loading = useAppSelector((state) => state.authReducer.loading);
 
   const handleLogout = () => {
-    dispatch(logoutAction());
+    dispatch(actionLogout());
     message.success("Logout successfully.", 2);
   };
 

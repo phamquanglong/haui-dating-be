@@ -83,17 +83,6 @@ export class UserActionsService {
         ],
         order: { createdAt: 'DESC' },
       });
-    return await this.userActionsRepository
-      .createQueryBuilder('userActions')
-      .leftJoinAndSelect('userActions.user', 'user.userActionUser')
-      .leftJoinAndSelect('userActions.targetUser', 'user.userActionTarget')
-      .where(
-        `userActions.targetUser.id = :targetUserId AND userActions.action = 'like'`,
-        {
-          targetUserId: userId,
-        },
-      )
-      .getMany();
   }
 
   async create(user: User, body: UserActionRequestDto) {
@@ -107,13 +96,7 @@ export class UserActionsService {
       where: { user: { id: user.id }, targetUser: { id: targetUser.id } },
     });
 
-    if (isExist) {
-      console.log(
-        '🚀 ~ file: user-actions.service.ts:108 ~ UserActionsService ~ create ~ isExist:',
-        isExist,
-      );
-      return undefined;
-    }
+    if (isExist) return undefined;
 
     const isMatch = await this.userActionsRepository
       .createQueryBuilder('userActions')

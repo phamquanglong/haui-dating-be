@@ -5,6 +5,7 @@ import { setComponentAction } from "../../reducer/layout.reducer";
 import { CHATTING } from "../../config/constant";
 import { useAppSelector } from "../../hook/useAppSelector";
 import { isEmpty } from "lodash";
+import { actionSelectConversation } from "../../reducer/conversations.reducer";
 
 const Conversations = () => {
   const dispatch = useAppDispatch();
@@ -12,26 +13,18 @@ const Conversations = () => {
   const listConversations = useAppSelector(
     (state) => state.conversationsReducer.listConversations
   );
+  const selectedConversation = useAppSelector(
+    (state) => state.conversationsReducer.selectedConversation
+  );
 
-  const handleChat = () => {
+  const handleSelectConversation = (conv: any) => {
     dispatch(setComponentAction(CHATTING));
+    dispatch(actionSelectConversation(conv));
   };
-
-  // const data = [
-  //   {
-  //     title: {},
-  //     desc: "test test test",
-  //     avt: "https://picsum.photos/600/600",
-  //   },
-  //   {
-  //     title: "abc abc",
-  //     desc: "test test test",
-  //     avt: "https://picsum.photos/600/600",
-  //   },
-  // ];
 
   const data = listConversations?.map((conv: any) => {
     const data = {
+      id: conv?.id,
       title:
         conv?.userOne?.id !== currentUser?.id
           ? conv?.userOne?.profile?.fullName
@@ -41,6 +34,7 @@ const Conversations = () => {
         conv?.userOne?.id !== currentUser?.id
           ? conv?.userOne?.images[0]?.imageUrl
           : conv?.userTwo?.images[0]?.imageUrl,
+      conv: conv,
     };
     return data;
   });
@@ -57,10 +51,11 @@ const Conversations = () => {
             dataSource={data}
             renderItem={(item: any, index) => (
               <List.Item
-                onClick={handleChat}
+                onClick={() => handleSelectConversation(item?.conv)}
                 className={`${
-                  index === 0 ? "bg-red-50 " : ""
-                } rounded-lg hover:bg-red-50`}
+                  item?.id === selectedConversation?.id ? "bg-red-50 " : ""
+                } 
+                rounded-lg hover:bg-red-50`}
               >
                 <List.Item.Meta
                   avatar={<Avatar className="w-20 h-20 ml-2" src={item.avt} />}

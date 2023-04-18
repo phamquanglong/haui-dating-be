@@ -10,6 +10,10 @@ import { useAppSelector } from "../../../hook/useAppSelector";
 import { GoLocation } from "react-icons/go";
 
 const DetailPartner = ({ userData }: { userData?: IUser }) => {
+  console.log(
+    "🚀 ~ file: DetailPartner.tsx:13 ~ DetailPartner ~ userData:",
+    userData
+  );
   const currentUser = useAppSelector((state) => state.authReducer.user);
 
   return (
@@ -18,7 +22,7 @@ const DetailPartner = ({ userData }: { userData?: IUser }) => {
         {userData?.images?.map((image) => (
           <div className="w-full h-[400px] rounded-t-xl ">
             <img
-              className="w-full h-full object-cover rounded-t-xl pointer-events-none"
+              className="w-full h-full object-cover rounded-xl pointer-events-none"
               src={image.imageUrl}
               alt={image.imageUrl}
             ></img>

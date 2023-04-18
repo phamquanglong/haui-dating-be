@@ -57,10 +57,10 @@ export const callApiLogin = createAsyncThunk(
   }
 );
 
-export const logoutAction = createAction("AUTH.ACTION_LOGOUT");
+export const actionLogout = createAction("AUTH.ACTION_LOGOUT");
 
 export const authReducer = createReducer(initState, (builder) => {
-  builder.addCase(logoutAction, (state) => {
+  builder.addCase(actionLogout, (state) => {
     state.isAuthenticated = false;
     state.user = {} as IUser;
     state.accessToken = "";

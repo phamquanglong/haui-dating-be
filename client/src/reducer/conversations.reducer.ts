@@ -1,14 +1,20 @@
-import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 import ConversationApi from "../api/conversation.api";
 
 interface State {
   listConversations: any;
   loading: boolean;
+  selectedConversation: any;
 }
 
 const initState: State = {
   listConversations: [],
   loading: false,
+  selectedConversation: {},
 };
 
 export const callApiGetAllConversations = createAsyncThunk(
@@ -22,7 +28,12 @@ export const callApiGetAllConversations = createAsyncThunk(
   }
 );
 
+export const actionSelectConversation = createAction("CONVERSATIONS.SELECT");
+
 export const conversationsReducer = createReducer(initState, (builder) => {
+  builder.addCase(actionSelectConversation, (state, { payload }) => {
+    state.selectedConversation = payload;
+  });
   builder
     .addCase(callApiGetAllConversations.pending, (state) => {
       state.loading = true;

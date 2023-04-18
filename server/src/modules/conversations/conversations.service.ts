@@ -25,6 +25,8 @@ export class ConversationsService {
         'userTwo.images',
         'userOne.profile',
         'userTwo.profile',
+        'userOne.userHobbies',
+        'userTwo.userHobbies',
       ],
       order: { updatedAt: 'DESC' },
     });
