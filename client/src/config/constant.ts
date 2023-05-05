@@ -30,3 +30,5 @@ export const KEY_CODE = {
   ARROW_DOWN: 40,
   ENTER: 13,
 };
+
+export const URL_WS = "http://localhost:8080";

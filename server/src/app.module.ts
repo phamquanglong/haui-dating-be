@@ -11,6 +11,7 @@ import { UserSettingsModule } from './modules/user-settings/user-settings.module
 import { UsersModule } from './modules/users/users.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { GatewayModules } from './gatewaies/gateway.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -38,6 +39,7 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
     MessagesModule,
     ProfileModule,
     CloudinaryModule,
+    GatewayModules,
   ],
 })
 export class AppModule {}
