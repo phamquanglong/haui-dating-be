@@ -1,5 +1,6 @@
 import { Button } from "antd";
-import React, { useState } from "react";
+import React, { KeyboardEvent, useState } from "react";
+import { KEY_CODE } from "../../../config/constant";
 import { useAppDispatch } from "../../../hook/useAppDispatch";
 import { useAppSelector } from "../../../hook/useAppSelector";
 import { callApiPostMessage } from "../../../reducer/messages.reducer";
@@ -28,6 +29,12 @@ const InputMessage = () => {
     }
   };
 
+  const handleEnter = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.keyCode === KEY_CODE.ENTER) {
+      handleSendMessage(e);
+    }
+  };
+
   return (
     <div className="h-[10%] w-full flex justify-between items-center px-8">
       <input
@@ -36,6 +43,7 @@ const InputMessage = () => {
         placeholder="Type a message ..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleEnter}
       />
       <Button
         type="primary"

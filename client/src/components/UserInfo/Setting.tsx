@@ -7,7 +7,7 @@ const Setting = () => {
       <div className="w-[80%] mt-4">
         <Row className="w-full" gutter={12}>
           <Col lg={24}>
-            <Form.Item className="w-full" label="Old" name="settingOld">
+            <Form.Item className="w-full" label="Old (years)" name="settingOld">
               <Slider
                 marks={{
                   18: {
@@ -28,7 +28,7 @@ const Setting = () => {
           <Col lg={24}>
             <Form.Item
               className="w-full"
-              label="Distance"
+              label="Distance (kms)"
               name="settingDistance"
             >
               <Slider

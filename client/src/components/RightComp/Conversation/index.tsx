@@ -3,7 +3,7 @@ import Info from "./Info";
 import ChatBox from "./ChatBox";
 
 const Conversation = () => {
-  const [showInfo, setShowInfo] = useState<boolean>(true);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
 
   return (
     <div

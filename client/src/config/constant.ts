@@ -28,4 +28,5 @@ export const KEY_CODE = {
   ARROW_RIGHT: 39,
   ARROW_UP: 38,
   ARROW_DOWN: 40,
+  ENTER: 13,
 };
