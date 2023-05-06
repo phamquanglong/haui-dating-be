@@ -7,11 +7,13 @@ import { Message } from 'src/modules/messages/messages.entity';
 import { MessagesModule } from 'src/modules/messages/messages.module';
 import { User } from 'src/modules/users/user.entity';
 import { UsersModule } from 'src/modules/users/users.module';
+import { UserSocketModule } from 'src/modules/user-socket/user-socket.module';
 import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
     UsersModule,
+    UserSocketModule,
     ConversationsModule,
     MessagesModule,
     TypeOrmModule.forFeature([User, Conversation, Message]),

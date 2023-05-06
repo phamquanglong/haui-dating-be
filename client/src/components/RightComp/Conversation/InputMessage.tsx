@@ -10,22 +10,25 @@ const InputMessage = () => {
   const selectedConversation = useAppSelector(
     (state) => state.conversationsReducer.selectedConversation
   );
+  const socket = useAppSelector((state) => state.socketReducer.socket);
   const [input, setInput] = useState<string>("");
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
 
     if (input.trim() !== "") {
-      dispatch(
-        callApiPostMessage({
-          conversationId: selectedConversation?.id,
-          message: input,
-        })
-      ).then((result: any) => {
-        if (result?.payload?.status === 201) {
-          setInput("");
-        }
-      });
+      // dispatch(
+      //   callApiPostMessage({
+      //     conversationId: selectedConversation?.id,
+      //     message: input,
+      //   })
+      // ).then((result: any) => {
+      //   if (result?.payload?.status === 201) {
+      //     setInput("");
+      //   }
+      // });
+      socket.sendMessage(input, selectedConversation?.id);
+      setInput("");
     }
   };
 

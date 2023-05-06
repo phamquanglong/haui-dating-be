@@ -5,6 +5,7 @@ import { userReducer } from "./user.reducer";
 import { userActionsReducer } from "./user-actions.reducer";
 import { conversationsReducer } from "./conversations.reducer";
 import { messagesReducer } from "./messages.reducer";
+import { socketReducer } from "./socket.reducer";
 
 export const rootReducer = {
   authReducer,
@@ -14,4 +15,5 @@ export const rootReducer = {
   userActionsReducer,
   conversationsReducer,
   messagesReducer,
+  socketReducer,
 };

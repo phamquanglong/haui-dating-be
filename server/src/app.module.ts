@@ -12,6 +12,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { GatewayModules } from './gatewaies/gateway.module';
+import { UserSocketModule } from './modules/user-socket/user-socket.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -40,6 +41,7 @@ import { GatewayModules } from './gatewaies/gateway.module';
     ProfileModule,
     CloudinaryModule,
     GatewayModules,
+    UserSocketModule,
   ],
 })
 export class AppModule {}

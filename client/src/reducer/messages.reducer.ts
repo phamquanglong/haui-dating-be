@@ -1,4 +1,8 @@
-import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 import MessagesApi from "../api/messages.api";
 
 interface State {
@@ -40,6 +44,8 @@ export const callApiPostMessage = createAsyncThunk(
   }
 );
 
+export const pushNewMessageAction = createAction<any>("MESSAGE.PUSH_NEW_MESS");
+
 export const messagesReducer = createReducer(initState, (builder) => {
   builder
     .addCase(callApiGetAllMessagesOfConversation.pending, (state) => {
@@ -57,4 +63,8 @@ export const messagesReducer = createReducer(initState, (builder) => {
       state.listMessages = [];
       state.loading = false;
     });
+
+  builder.addCase(pushNewMessageAction, (state, { payload }) => {
+    state.listMessages = [...state.listMessages, payload];
+  });
 });

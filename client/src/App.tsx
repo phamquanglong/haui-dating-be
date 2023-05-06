@@ -1,13 +1,13 @@
 import { ConfigProvider } from "antd";
 import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { io } from "socket.io-client";
-import { URL_WS } from "./config/constant";
 import { routes } from "./config/router";
 import { useAppDispatch } from "./hook/useAppDispatch";
 import { useAppSelector } from "./hook/useAppSelector";
 import { callApiGetInfo } from "./reducer/auth.reducer";
+import { initSocketAction } from "./reducer/socket.reducer";
 import NotFound from "./screens/NotFound";
+import { SocketService } from "./Services/Socket.service";
 
 const App = () => {
   const dispatch = useAppDispatch();
@@ -16,8 +16,10 @@ const App = () => {
   useEffect(() => {
     if (accessToken) {
       dispatch(callApiGetInfo());
-      const socket = io(URL_WS, { query: { token: accessToken } });
-      socket.on("connect", () => {});
+      const appSocket = new SocketService();
+      appSocket.connect();
+      // set socket into store
+      dispatch(initSocketAction(appSocket));
     }
   }, [accessToken, dispatch]);
 

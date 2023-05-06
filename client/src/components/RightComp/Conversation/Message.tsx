@@ -1,6 +1,7 @@
 import React from "react";
 import { Avatar, Tooltip } from "antd";
 import dayjs from "dayjs";
+import { useAppSelector } from "../../../hook/useAppSelector";
 
 const Message = ({
   message,
@@ -9,6 +10,16 @@ const Message = ({
   message: any;
   isMyMessage?: boolean;
 }) => {
+  const currentUser = useAppSelector((state) => state.authReducer.user);
+  const selectedConversation = useAppSelector(
+    (state) => state.conversationsReducer.selectedConversation
+  );
+
+  const partner =
+    selectedConversation?.userOne?.id === currentUser?.id
+      ? selectedConversation?.userTwo
+      : selectedConversation?.userOne;
+
   return (
     <div
       className={`flex relative w-full my-[24px] ${
@@ -19,9 +30,14 @@ const Message = ({
         <Avatar
           size={48}
           className="-mt-5 -ml-2 mr-2"
+          // src={
+          //   message?.sender?.images?.length > 0
+          //     ? message?.sender?.images[0]?.imageUrl
+          //     : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
+          // }
           src={
-            message?.sender?.images?.length > 0
-              ? message?.sender?.images[0]?.imageUrl
+            partner?.profile !== null && partner?.images?.length > 0
+              ? partner?.images[0]?.imageUrl
               : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
           }
         />

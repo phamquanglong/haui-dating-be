@@ -1,6 +1,6 @@
 import { CloseOutlined, FlagOutlined, InfoOutlined } from "@ant-design/icons";
 import { Avatar, Tooltip } from "antd";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useAppSelector } from "../../../hook/useAppSelector";
 import CircleButton from "../../Button/CircleButton";
 import InputMessage from "./InputMessage";
@@ -14,14 +14,22 @@ const ChatBox = ({
   setShowInfo: any;
 }) => {
   const currentUser = useAppSelector((state) => state.authReducer.user);
+  const listMessages = useAppSelector(
+    (state) => state.messagesReducer.listMessages
+  );
   const selectedConversation = useAppSelector(
     (state) => state.conversationsReducer.selectedConversation
   );
+  const lastMessageRef = useRef<any>(null);
 
   const partner =
     selectedConversation?.userOne?.id === currentUser?.id
       ? selectedConversation?.userTwo
       : selectedConversation?.userOne;
+
+  useEffect(() => {
+    lastMessageRef?.current?.scrollIntoView({ behavior: "smooth" });
+  }, [listMessages]);
 
   return (
     <div
@@ -65,7 +73,10 @@ const ChatBox = ({
           </Tooltip>
         </div>
       </div>
-      <Messages className="h-[80%] w-full border-b-[0.25px]" />
+      <Messages
+        className="h-[80%] w-full border-b-[0.25px]"
+        lastMessageRef={lastMessageRef}
+      />
       <InputMessage />
     </div>
   );
