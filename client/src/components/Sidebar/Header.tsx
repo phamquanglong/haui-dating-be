@@ -16,9 +16,11 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.authReducer.user);
   const loading = useAppSelector((state) => state.authReducer.loading);
+  const socket = useAppSelector((state) => state.socketReducer.socket);
 
   const handleLogout = () => {
     dispatch(actionLogout());
+    socket.disconnect();
     message.success("Logout successfully.", 2);
   };
 

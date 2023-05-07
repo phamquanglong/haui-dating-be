@@ -29,13 +29,17 @@ const Messages = ({
   useEffect(() => {
     if (selectedConversation) {
       dispatch(callApiGetAllMessagesOfConversation(selectedConversation?.id));
+      setTypingStatus(false);
     }
   }, [dispatch, selectedConversation]);
 
   useEffect(() => {
     socket.receiveMessage((data: any) => dispatch(pushNewMessageAction(data)));
-    socket.receiveTypingStatus((data: any) => setTypingStatus(data));
-  }, [socket, dispatch]);
+    socket.receiveTypingStatus((data: any) => {
+      if (selectedConversation?.id === data?.conversationId)
+        setTypingStatus(data.isTyping);
+    });
+  }, [socket, dispatch, selectedConversation?.id]);
 
   useEffect(() => {
     if (isTyping)

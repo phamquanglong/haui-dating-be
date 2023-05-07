@@ -65,7 +65,7 @@ const Conversations = () => {
                   avatar={
                     <Avatar
                       key={index}
-                      className="w-20 h-20 ml-2"
+                      className="w-20 h-20 ml-2 relative"
                       src={
                         item?.avt
                           ? item?.avt

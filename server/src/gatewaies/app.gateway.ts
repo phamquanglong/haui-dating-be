@@ -34,15 +34,15 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const userId = await this.validation(client);
     await this.userSocketService.create(userId, client?.id);
 
-    // const allConnection = await this.userSocketService.getAll();
-    // console.log('all user (connect): ', allConnection);
+    const allConnection = await this.userSocketService.getAll();
+    console.log('all user (connect): ', allConnection);
     // await this.userSocketService.deleteAll();
   }
 
   async handleDisconnect(client: Socket) {
     await this.userSocketService.delete(client?.id);
-    // const allConnection = await this.userSocketService.getAll();
-    // console.log('all user (disconnect): ', allConnection);
+    const allConnection = await this.userSocketService.getAll();
+    console.log('all user (disconnect): ', allConnection);
 
     console.log('disconnect');
   }
@@ -97,9 +97,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     partnerSocket.map((userSocket) => {
-      this.server
-        .to(userSocket.socketId)
-        .emit(WS_EVENT.TYPING_RES, payload.isTyping);
+      this.server.to(userSocket.socketId).emit(WS_EVENT.TYPING_RES, payload);
     });
   }
 }
