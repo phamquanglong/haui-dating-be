@@ -1,32 +1,31 @@
 import { Button } from "antd";
-import React, { KeyboardEvent, useState } from "react";
+import React, { KeyboardEvent, useEffect, useState } from "react";
 import { KEY_CODE } from "../../../config/constant";
-import { useAppDispatch } from "../../../hook/useAppDispatch";
 import { useAppSelector } from "../../../hook/useAppSelector";
-import { callApiPostMessage } from "../../../reducer/messages.reducer";
 
 const InputMessage = () => {
-  const dispatch = useAppDispatch();
   const selectedConversation = useAppSelector(
     (state) => state.conversationsReducer.selectedConversation
   );
   const socket = useAppSelector((state) => state.socketReducer.socket);
   const [input, setInput] = useState<string>("");
 
+  useEffect(() => {
+    const handleSetTypingStatus = (i: string) => {
+      if (i !== "") {
+        socket.setTypingStatus(true, selectedConversation?.id);
+      } else {
+        socket.setTypingStatus(false, selectedConversation?.id);
+      }
+    };
+
+    handleSetTypingStatus(input);
+  }, [input, socket, selectedConversation?.id]);
+
   const handleSendMessage = (e: any) => {
     e.preventDefault();
 
     if (input.trim() !== "") {
-      // dispatch(
-      //   callApiPostMessage({
-      //     conversationId: selectedConversation?.id,
-      //     message: input,
-      //   })
-      // ).then((result: any) => {
-      //   if (result?.payload?.status === 201) {
-      //     setInput("");
-      //   }
-      // });
       socket.sendMessage(input, selectedConversation?.id);
       setInput("");
     }

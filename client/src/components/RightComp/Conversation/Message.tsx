@@ -2,13 +2,16 @@ import React from "react";
 import { Avatar, Tooltip } from "antd";
 import dayjs from "dayjs";
 import { useAppSelector } from "../../../hook/useAppSelector";
+import TypingIndicator from "./TypingIndicator";
 
 const Message = ({
   message,
   isMyMessage,
+  isTyping,
 }: {
-  message: any;
+  message?: any;
   isMyMessage?: boolean;
+  isTyping?: boolean;
 }) => {
   const currentUser = useAppSelector((state) => state.authReducer.user);
   const selectedConversation = useAppSelector(
@@ -42,23 +45,36 @@ const Message = ({
           }
         />
       )}
-      <Tooltip
-        title={
-          message?.createdAt &&
-          dayjs(message?.createdAt).format("HH:mm A DD-MM-YYYY")
-        }
-        placement={`${isMyMessage ? "left" : "right"}`}
-      >
+
+      {isTyping ? (
         <div
-          className={`relative right-0 max-w-[65%] p-3 ${
+          className={`relative right-0 max-w-[65%] p-2 ${
             isMyMessage
               ? "bg-primaryColor text-red-50 before:bfMyMess"
               : "bg-[#ddd] before:bfOtherMess ml-2 text-gray-600"
           }  rounded-[10px]`}
         >
-          <p className="text-sm md:text-base text-left">{message?.message}</p>
+          <TypingIndicator />
         </div>
-      </Tooltip>
+      ) : (
+        <Tooltip
+          title={
+            message?.createdAt &&
+            dayjs(message?.createdAt).format("HH:mm A DD-MM-YYYY")
+          }
+          placement={`${isMyMessage ? "left" : "right"}`}
+        >
+          <div
+            className={`relative right-0 max-w-[65%] p-2 ${
+              isMyMessage
+                ? "bg-primaryColor text-red-50 before:bfMyMess"
+                : "bg-[#ddd] before:bfOtherMess ml-2 text-gray-600"
+            }  rounded-[10px]`}
+          >
+            <p className="text-sm md:text-base text-left">{message?.message}</p>
+          </div>
+        </Tooltip>
+      )}
     </div>
   );
 };

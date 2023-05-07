@@ -6,7 +6,9 @@ export interface ISocketService {
   connect: () => void;
   disconnect: () => void;
   sendMessage: (message: string, conversationId: number) => void;
-  receiveMessage: (receivedAction: any) => void;
+  receiveMessage: (listener: any) => void;
+  setTypingStatus: (status: boolean, conversationId: number) => void;
+  receiveTypingStatus: (listener: any) => void;
 }
 
 export class SocketService implements ISocketService {
@@ -29,7 +31,15 @@ export class SocketService implements ISocketService {
     this.socket.emit(WS_EVENT.SEND_MESSAGE, { message, conversationId });
   }
 
-  receiveMessage(receivedAction: any) {
-    this.socket.on(WS_EVENT.RECEIVE_MESSAGE, receivedAction);
+  receiveMessage(listener: any) {
+    this.socket.on(WS_EVENT.RECEIVE_MESSAGE, listener);
+  }
+
+  setTypingStatus(isTyping: boolean, conversationId: number) {
+    this.socket.emit(WS_EVENT.TYPING, { isTyping, conversationId });
+  }
+
+  receiveTypingStatus(listener: any) {
+    this.socket.on(WS_EVENT.TYPING_RES, listener);
   }
 }

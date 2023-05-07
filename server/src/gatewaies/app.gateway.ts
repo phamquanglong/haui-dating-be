@@ -13,7 +13,7 @@ import { UserSocketService } from 'src/modules/user-socket/user-socket.service';
 import { User } from 'src/modules/users/user.entity';
 import { UsersService } from 'src/modules/users/users.service';
 import { WS_EVENT } from 'src/utils/constant';
-import { Message } from './gateway.interface';
+import { Message, SetTypingStatusRequest } from './gateway.interface';
 
 @WebSocketGateway(8080, {
   cors: {
@@ -79,6 +79,27 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server
         .to(userSocket.socketId)
         .emit(WS_EVENT.RECEIVE_MESSAGE, newMessage);
+    });
+  }
+
+  @SubscribeMessage(WS_EVENT.TYPING)
+  async setTypingStatus(client: Socket, payload: SetTypingStatusRequest) {
+    const userId = await this.validation(client);
+    const conversation = await this.conversationService.getConversationById(
+      payload.conversationId,
+    );
+
+    const partnerId = [conversation.userOne.id, conversation.userTwo.id].filter(
+      (el) => el !== userId,
+    );
+    const partnerSocket = await this.userSocketService.findSocketsByUserIds(
+      partnerId,
+    );
+
+    partnerSocket.map((userSocket) => {
+      this.server
+        .to(userSocket.socketId)
+        .emit(WS_EVENT.TYPING_RES, payload.isTyping);
     });
   }
 }

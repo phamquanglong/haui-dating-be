@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../../hook/useAppDispatch";
 import { useAppSelector } from "../../../hook/useAppSelector";
 import {
@@ -23,6 +23,7 @@ const Messages = ({
   const listMessages = useAppSelector(
     (state) => state.messagesReducer.listMessages
   );
+  const [isTyping, setTypingStatus] = useState<boolean>(false);
   const displayListMessage = useMemo(() => listMessages, [listMessages]);
 
   useEffect(() => {
@@ -33,7 +34,13 @@ const Messages = ({
 
   useEffect(() => {
     socket.receiveMessage((data: any) => dispatch(pushNewMessageAction(data)));
+    socket.receiveTypingStatus((data: any) => setTypingStatus(data));
   }, [socket, dispatch]);
+
+  useEffect(() => {
+    if (isTyping)
+      lastMessageRef?.current?.scrollIntoView({ behavior: "smooth" });
+  }, [isTyping, lastMessageRef]);
 
   return (
     <div className={"p-4 overflow-y-scroll " + className}>
@@ -44,6 +51,7 @@ const Messages = ({
           isMyMessage={currentUser?.id === mess?.sender?.id}
         />
       ))}
+      {isTyping && <Message isTyping={true} />}
       <div ref={lastMessageRef} />
     </div>
   );

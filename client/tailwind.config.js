@@ -13,6 +13,19 @@ module.exports = {
       gridTemplateRows: {
         sidebar: "1fr 1.5fr 10fr",
       },
+
+      keyframes: {
+        drop: {
+          "0%": { transform: "none" },
+          "50%": { transform: "translateY(-80%)" },
+          "100%": { transform: "none" },
+        },
+      },
+      animation: {
+        "dot1-fall": "drop 1s ease-in-out 0.12s infinite",
+        "dot2-fall": "drop 1s ease-in-out  0.24s infinite",
+        "dot3-fall": "drop 1s ease-in-out  0.36s infinite",
+      },
     },
   },
   plugins: [require("tailwindcss"), require("autoprefixer")],
