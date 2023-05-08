@@ -9,10 +9,10 @@ const initState: State = {
   component: EXPLORE,
 };
 
-export const setComponentAction = createAction<string>("LAYOUT.SET_COMP");
+export const actionSetComponent = createAction<string>("LAYOUT.SET_COMP");
 
 export const layoutReducer = createReducer(initState, (builder) => {
-  builder.addCase(setComponentAction, (state, { payload }) => {
+  builder.addCase(actionSetComponent, (state, { payload }) => {
     state.component = payload;
   });
 });

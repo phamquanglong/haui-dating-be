@@ -5,11 +5,14 @@ import {
 } from "@ant-design/icons";
 import { Avatar, message, Tooltip } from "antd";
 import React from "react";
-import { LIKE, SETTING } from "../../config/constant";
+import { EXPLORE, LIKE, SETTING } from "../../config/constant";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { useAppSelector } from "../../hook/useAppSelector";
 import { actionLogout } from "../../reducer/auth.reducer";
-import { setComponentAction } from "../../reducer/layout.reducer";
+import { actionResetConversation } from "../../reducer/conversations.reducer";
+import { actionSetComponent } from "../../reducer/layout.reducer";
+import { actionResetMessage } from "../../reducer/messages.reducer";
+import { actionResetSocket } from "../../reducer/socket.reducer";
 import CircleButton from "../Button/CircleButton";
 
 const Header = () => {
@@ -20,15 +23,19 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(actionLogout());
+    dispatch(actionResetConversation());
+    dispatch(actionResetMessage());
+    dispatch(actionResetSocket());
+    dispatch(actionSetComponent(EXPLORE));
     socket.disconnect();
     message.success("Logout successfully.", 2);
   };
 
   const handleSetting = () => {
-    dispatch(setComponentAction(SETTING));
+    dispatch(actionSetComponent(SETTING));
   };
   const handleLike = () => {
-    dispatch(setComponentAction(LIKE));
+    dispatch(actionSetComponent(LIKE));
   };
 
   return (
@@ -36,13 +43,12 @@ const Header = () => {
       <div className="flex items-center">
         <Avatar
           shape="circle"
-          size={60}
           src={
             user?.profile !== null && !loading && user?.images?.length > 0
               ? user?.images[0]?.imageUrl
               : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
           }
-          className="border-[1.5px] border-white"
+          className="border-[1.5px] border-white w-16 h-16"
         />
         <h3 className="text-xl ml-2 text-red-50">
           {user?.profile?.fullName || "Welcome to HaUI Dating"}

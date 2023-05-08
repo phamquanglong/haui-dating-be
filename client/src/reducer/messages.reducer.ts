@@ -46,6 +46,8 @@ export const callApiPostMessage = createAsyncThunk(
 
 export const pushNewMessageAction = createAction<any>("MESSAGE.PUSH_NEW_MESS");
 
+export const actionResetMessage = createAction("MESSAGE.RESET");
+
 export const messagesReducer = createReducer(initState, (builder) => {
   builder
     .addCase(callApiGetAllMessagesOfConversation.pending, (state) => {
@@ -66,5 +68,10 @@ export const messagesReducer = createReducer(initState, (builder) => {
 
   builder.addCase(pushNewMessageAction, (state, { payload }) => {
     state.listMessages = [...state.listMessages, payload];
+  });
+
+  builder.addCase(actionResetMessage, (state, { payload }) => {
+    state.listMessages = [];
+    state.loading = false;
   });
 });

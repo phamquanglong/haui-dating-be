@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { Avatar, Empty, List } from "antd";
 import { useAppDispatch } from "../../hook/useAppDispatch";
-import { setComponentAction } from "../../reducer/layout.reducer";
+import { actionSetComponent } from "../../reducer/layout.reducer";
 import { CHATTING } from "../../config/constant";
 import { useAppSelector } from "../../hook/useAppSelector";
-import { isEmpty } from "lodash";
+import { find, isEmpty } from "lodash";
 import { actionSelectConversation } from "../../reducer/conversations.reducer";
+import { setListPartnersOnlineAction } from "../../reducer/partner.reducer";
 
 const Conversations = () => {
   const dispatch = useAppDispatch();
@@ -15,25 +16,29 @@ const Conversations = () => {
   const listConversations = useAppSelector(
     (state) => state.conversationsReducer.listConversations
   );
+  const listPartnersOnline = useAppSelector(
+    (state) => state.partnerReducer.listPartnersOnline
+  );
+
   const selectedConversation = useAppSelector(
     (state) => state.conversationsReducer.selectedConversation
   );
 
   const handleSelectConversation = (conv: any) => {
-    dispatch(setComponentAction(CHATTING));
+    dispatch(actionSetComponent(CHATTING));
     dispatch(actionSelectConversation(conv));
   };
 
   useEffect(() => {
     if (!isEmpty(socket)) {
       socket.receiveListUserOnline((data: any) => {
-        console.log(data);
+        dispatch(setListPartnersOnlineAction(data));
       });
     }
-  }, [socket]);
+  }, [socket, dispatch]);
 
   const data = listConversations?.map((conv: any) => {
-    const data = {
+    const item = {
       id: conv?.id,
       title:
         conv?.userOne?.id !== currentUser?.id
@@ -45,8 +50,12 @@ const Conversations = () => {
           ? conv?.userOne?.images[0]?.imageUrl
           : conv?.userTwo?.images[0]?.imageUrl,
       conv: conv,
+      partnerId:
+        conv?.userOne?.id !== currentUser?.id
+          ? conv?.userOne?.id
+          : conv?.userTwo?.id,
     };
-    return data;
+    return item;
   });
 
   return (
@@ -72,15 +81,22 @@ const Conversations = () => {
               >
                 <List.Item.Meta
                   avatar={
-                    <Avatar
-                      key={index}
-                      className="w-20 h-20 ml-2 relative"
-                      src={
-                        item?.avt
-                          ? item?.avt
-                          : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
-                      }
-                    />
+                    <div className="relative">
+                      <Avatar
+                        key={index}
+                        className="w-[4.5rem] h-[4.5rem] ml-2 relative"
+                        src={
+                          item?.avt
+                            ? item?.avt
+                            : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
+                        }
+                      />
+                      {find(listPartnersOnline, {
+                        userId: item?.partnerId,
+                      }) && (
+                        <span className="bottom-0 right-1 absolute  w-4 h-4 bg-primaryColor border-2 border-white rounded-full"></span>
+                      )}
+                    </div>
                   }
                   title={
                     <h5 className="font-bold mt-4 text-xl">{item.title}</h5>

@@ -2,13 +2,13 @@ import React from "react";
 import CircleButton from "../Button/CircleButton";
 import { TbCards } from "react-icons/tb";
 import { useAppDispatch } from "../../hook/useAppDispatch";
-import { setComponentAction } from "../../reducer/layout.reducer";
+import { actionSetComponent } from "../../reducer/layout.reducer";
 import { EXPLORE } from "../../config/constant";
 
 const Explore = () => {
   const dispatch = useAppDispatch();
   const handleExplore = () => {
-    dispatch(setComponentAction(EXPLORE));
+    dispatch(actionSetComponent(EXPLORE));
   };
 
   return (

@@ -5,7 +5,7 @@ import { routes } from "./config/router";
 import { useAppDispatch } from "./hook/useAppDispatch";
 import { useAppSelector } from "./hook/useAppSelector";
 import { callApiGetInfo } from "./reducer/auth.reducer";
-import { initSocketAction } from "./reducer/socket.reducer";
+import { ActionInitSocket } from "./reducer/socket.reducer";
 import NotFound from "./screens/NotFound";
 import { SocketService } from "./Services/Socket.service";
 
@@ -19,7 +19,7 @@ const App = () => {
       const appSocket = new SocketService();
       appSocket.connect();
       // set socket into store
-      dispatch(initSocketAction(appSocket));
+      dispatch(ActionInitSocket(appSocket));
     }
   }, [accessToken, dispatch]);
 

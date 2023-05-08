@@ -30,10 +30,18 @@ export const callApiGetAllConversations = createAsyncThunk(
 
 export const actionSelectConversation = createAction("CONVERSATIONS.SELECT");
 
+export const actionResetConversation = createAction("CONVERSATION.RESET");
+
 export const conversationsReducer = createReducer(initState, (builder) => {
   builder.addCase(actionSelectConversation, (state, { payload }) => {
     state.selectedConversation = payload;
   });
+
+  builder.addCase(actionResetConversation, (state, { payload }) => {
+    state.listConversations = [];
+    state.selectedConversation = {};
+  });
+
   builder
     .addCase(callApiGetAllConversations.pending, (state) => {
       state.loading = true;

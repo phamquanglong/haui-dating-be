@@ -31,8 +31,7 @@ const Message = ({
     >
       {!isMyMessage && (
         <Avatar
-          size={48}
-          className="-mt-5 -ml-2 mr-2"
+          className="-mt-6 -ml-2 mr-4 w-14 h-14"
           // src={
           //   message?.sender?.images?.length > 0
           //     ? message?.sender?.images[0]?.imageUrl

@@ -1,5 +1,6 @@
 import { CloseOutlined, FlagOutlined, InfoOutlined } from "@ant-design/icons";
 import { Avatar, Tooltip } from "antd";
+import { find } from "lodash";
 import React, { useEffect, useRef } from "react";
 import { useAppSelector } from "../../../hook/useAppSelector";
 import CircleButton from "../../Button/CircleButton";
@@ -20,6 +21,13 @@ const ChatBox = ({
   const selectedConversation = useAppSelector(
     (state) => state.conversationsReducer.selectedConversation
   );
+  console.log(
+    "🚀 ~ file: ChatBox.tsx:24 ~ selectedConversation:",
+    selectedConversation
+  );
+  const listPartnersOnline = useAppSelector(
+    (state) => state.partnerReducer.listPartnersOnline
+  );
   const lastMessageRef = useRef<any>(null);
 
   const partner =
@@ -39,15 +47,27 @@ const ChatBox = ({
     >
       <div className="h-[10%] w-full border-b-[0.25px] px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <Avatar
-            shape="circle"
-            size={64}
-            src={
-              partner?.profile !== null && partner?.images?.length > 0
-                ? partner?.images[0]?.imageUrl
-                : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
-            }
-          />
+          <div className="relative">
+            <Avatar
+              className="w-16 h-16"
+              shape="circle"
+              src={
+                partner?.profile !== null && partner?.images?.length > 0
+                  ? partner?.images[0]?.imageUrl
+                  : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
+              }
+            />
+            {find(listPartnersOnline, {
+              userId: selectedConversation?.userOne?.id,
+            }) && (
+              <span className="bottom-0 right-1 absolute  w-4 h-4 bg-primaryColor border-2 border-white rounded-full"></span>
+            )}
+            {find(listPartnersOnline, {
+              userId: selectedConversation?.userTwo?.id,
+            }) && (
+              <span className="bottom-0 right-1 absolute  w-4 h-4 bg-primaryColor border-2 border-white rounded-full"></span>
+            )}
+          </div>
           <h3 className="text-2xl ml-4 font-medium">
             {partner?.profile?.fullName}
           </h3>

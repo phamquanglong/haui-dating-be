@@ -9,10 +9,15 @@ const initState: State = {
   socket: {} as ISocketService,
 };
 
-export const initSocketAction = createAction<ISocketService>("SOCKET.INIT");
+export const ActionInitSocket = createAction<ISocketService>("SOCKET.INIT");
+
+export const actionResetSocket = createAction("SOCKET.RESET");
 
 export const socketReducer = createReducer(initState, (builder) => {
-  builder.addCase(initSocketAction, (state, { payload }) => {
+  builder.addCase(ActionInitSocket, (state, { payload }) => {
     state.socket = payload;
+  });
+  builder.addCase(actionResetSocket, (state, { payload }) => {
+    state.socket = {} as ISocketService;
   });
 });
