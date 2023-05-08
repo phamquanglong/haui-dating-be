@@ -32,19 +32,22 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(client: Socket) {
     const userId = await this.validation(client);
+    console.log('connected');
     await this.userSocketService.create(userId, client?.id);
 
     const allConnection = await this.userSocketService.getAll();
     console.log('all user (connect): ', allConnection);
     // await this.userSocketService.deleteAll();
+    this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
   }
 
   async handleDisconnect(client: Socket) {
     await this.userSocketService.delete(client?.id);
+    console.log('disconnected');
     const allConnection = await this.userSocketService.getAll();
     console.log('all user (disconnect): ', allConnection);
 
-    console.log('disconnect');
+    this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
   }
 
   async validation(client: Socket) {

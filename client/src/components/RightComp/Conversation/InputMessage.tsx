@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import { isEmpty } from "lodash";
 import React, { KeyboardEvent, useEffect, useState } from "react";
 import { KEY_CODE } from "../../../config/constant";
 import { useAppSelector } from "../../../hook/useAppSelector";
@@ -11,23 +12,27 @@ const InputMessage = () => {
   const [input, setInput] = useState<string>("");
 
   useEffect(() => {
-    const handleSetTypingStatus = (i: string) => {
-      if (i !== "") {
-        socket.setTypingStatus(true, selectedConversation?.id);
-      } else {
-        socket.setTypingStatus(false, selectedConversation?.id);
-      }
-    };
+    if (!isEmpty(socket)) {
+      const handleSetTypingStatus = (i: string) => {
+        if (i !== "") {
+          socket.setTypingStatus(true, selectedConversation?.id);
+        } else {
+          socket.setTypingStatus(false, selectedConversation?.id);
+        }
+      };
 
-    handleSetTypingStatus(input);
+      handleSetTypingStatus(input);
+    }
   }, [input, socket, selectedConversation?.id]);
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
 
     if (input.trim() !== "") {
-      socket.sendMessage(input, selectedConversation?.id);
-      setInput("");
+      if (!isEmpty(socket)) {
+        socket.sendMessage(input, selectedConversation?.id);
+        setInput("");
+      }
     }
   };
 

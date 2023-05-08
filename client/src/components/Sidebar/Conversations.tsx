@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, Empty, List } from "antd";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { setComponentAction } from "../../reducer/layout.reducer";
@@ -9,6 +9,7 @@ import { actionSelectConversation } from "../../reducer/conversations.reducer";
 
 const Conversations = () => {
   const dispatch = useAppDispatch();
+  const socket = useAppSelector((state) => state.socketReducer.socket);
   const currentUser = useAppSelector((state) => state.authReducer.user);
   const component = useAppSelector((state) => state.layoutReducer.component);
   const listConversations = useAppSelector(
@@ -22,6 +23,14 @@ const Conversations = () => {
     dispatch(setComponentAction(CHATTING));
     dispatch(actionSelectConversation(conv));
   };
+
+  useEffect(() => {
+    if (!isEmpty(socket)) {
+      socket.receiveListUserOnline((data: any) => {
+        console.log(data);
+      });
+    }
+  }, [socket]);
 
   const data = listConversations?.map((conv: any) => {
     const data = {

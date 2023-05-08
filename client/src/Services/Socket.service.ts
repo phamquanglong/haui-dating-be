@@ -9,6 +9,7 @@ export interface ISocketService {
   receiveMessage: (listener: any) => void;
   setTypingStatus: (status: boolean, conversationId: number) => void;
   receiveTypingStatus: (listener: any) => void;
+  receiveListUserOnline: (listener: any) => void;
 }
 
 export class SocketService implements ISocketService {
@@ -41,5 +42,9 @@ export class SocketService implements ISocketService {
 
   receiveTypingStatus(listener: any) {
     this.socket.on(WS_EVENT.TYPING_RES, listener);
+  }
+
+  receiveListUserOnline(listener: any) {
+    this.socket.on(WS_EVENT.RECEIVE_USERS_ONLINE, listener);
   }
 }
