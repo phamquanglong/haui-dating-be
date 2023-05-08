@@ -10,10 +10,10 @@ import { Server, Socket } from 'socket.io';
 import { ConversationsService } from 'src/modules/conversations/conversations.service';
 import { MessagesService } from 'src/modules/messages/messages.service';
 import { UserSocketService } from 'src/modules/user-socket/user-socket.service';
-import { User } from 'src/modules/users/user.entity';
 import { UsersService } from 'src/modules/users/users.service';
 import { WS_EVENT } from 'src/utils/constant';
 import { Message, SetTypingStatusRequest } from './gateway.interface';
+import * as lodash from 'lodash';
 
 @WebSocketGateway(8080, {
   cors: {
@@ -38,16 +38,20 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const allConnection = await this.userSocketService.getAll();
     console.log('all user (connect): ', allConnection);
     // await this.userSocketService.deleteAll();
-    this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
+
+    // this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
+    await this.senOnlinePartnersAndNotifyConnectedToPartners(userId);
   }
 
   async handleDisconnect(client: Socket) {
+    const userId = await this.validation(client);
     await this.userSocketService.delete(client?.id);
     console.log('disconnected');
     const allConnection = await this.userSocketService.getAll();
     console.log('all user (disconnect): ', allConnection);
 
-    this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
+    // this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
+    await this.senOnlinePartnersAndNotifyConnectedToPartners(userId);
   }
 
   async validation(client: Socket) {
@@ -58,6 +62,35 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } catch (error) {
       this.handleDisconnect(client);
     }
+  }
+
+  async senOnlinePartnersAndNotifyConnectedToPartners(userId: number) {
+    await this.sendOnlinePartners(userId);
+    const partnersOfUser = await this.userService.getAllPartnersByUserId(
+      userId,
+    );
+    partnersOfUser.forEach(
+      async (partner) => await this.sendOnlinePartners(partner),
+    );
+  }
+
+  async sendOnlinePartners(userId: number) {
+    const partnersOfUser = await this.userService.getAllPartnersByUserId(
+      userId,
+    );
+    const allConnection = await this.userSocketService.getAll();
+
+    const partnersConnection = allConnection.filter((connection) =>
+      lodash.includes(partnersOfUser, connection.userId),
+    );
+
+    const userConnection = allConnection.find(
+      (connection) => userId === connection.userId,
+    );
+
+    this.server
+      .to(userConnection?.socketId)
+      .emit(WS_EVENT.RECEIVE_USERS_ONLINE, partnersConnection);
   }
 
   @SubscribeMessage(WS_EVENT.SEND_MESSAGE)

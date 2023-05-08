@@ -12,6 +12,7 @@ import { UserImagesService } from '../user-images/user-images.service';
 import { UserSettingsService } from '../user-settings/user-settings.service';
 import { UserInformationRequestDto } from './dto/user-information.dto';
 import { User } from './user.entity';
+import { ConversationsService } from '../conversations/conversations.service';
 
 @Injectable()
 export class UsersService {
@@ -19,6 +20,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly profileService: ProfileService,
+    private readonly conversationService: ConversationsService,
     private readonly userImageService: UserImagesService,
     private readonly userSettingService: UserSettingsService,
     private readonly userHobbiesService: UserHobbiesService,
@@ -29,6 +31,15 @@ export class UsersService {
     return await this.usersRepository.find({
       relations: ['profile', 'images', 'settings', 'userHobbies'],
     });
+  }
+
+  async getAllPartnersByUserId(userId) {
+    const conversationsOfUser =
+      await this.conversationService.getAllConversationByUserId(userId);
+    const partnersOfUser = conversationsOfUser.map((conv) =>
+      userId === conv?.userOne?.id ? conv?.userTwo?.id : conv?.userOne?.id,
+    );
+    return partnersOfUser;
   }
 
   async getAllUserSuggest(currentUser: User) {
