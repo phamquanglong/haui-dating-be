@@ -31,7 +31,7 @@ const Info = ({
                 currentUser?.profile?.longitude,
                 userData?.profile?.latitude,
                 userData?.profile?.longitude
-              )} kms away`
+              )} kms`
             : ""}
         </p>
       </div>

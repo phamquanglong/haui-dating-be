@@ -20,11 +20,17 @@ module.exports = {
           "50%": { transform: "translateY(-80%)" },
           "100%": { transform: "none" },
         },
+        miniDrop: {
+          "0%": { transform: "none" },
+          "50%": { transform: "translateY(-20%)" },
+          "100%": { transform: "none" },
+        },
       },
       animation: {
         "dot1-fall": "drop 1s ease-in-out 0.12s infinite",
         "dot2-fall": "drop 1s ease-in-out  0.24s infinite",
         "dot3-fall": "drop 1s ease-in-out  0.36s infinite",
+        "arrow-down-fall": "miniDrop 2s ease-in-out 0.12s infinite",
       },
     },
   },

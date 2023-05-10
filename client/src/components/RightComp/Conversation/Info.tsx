@@ -14,7 +14,7 @@ const Info = () => {
       : selectedConversation?.userOne;
 
   return (
-    <div className="w-[400px] h-[calc(100vh_-_4rem)] rounded-r-lg border-[0.125px] p-4">
+    <div className="md:w-[270px] lg:w-[400px] h-[calc(100vh_-_4rem)] rounded-r-lg border-[0.125px] p-4">
       <div className="h-full flex flex-col overflow-y-scroll">
         <DetailPartner userData={partner} />
       </div>

@@ -3,7 +3,7 @@ import {
   LogoutOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { Avatar, message, Tooltip } from "antd";
+import { Avatar, Menu, message, Popover } from "antd";
 import React from "react";
 import { EXPLORE, LIKE, SETTING } from "../../config/constant";
 import { useAppDispatch } from "../../hook/useAppDispatch";
@@ -14,6 +14,7 @@ import { actionSetComponent } from "../../reducer/layout.reducer";
 import { actionResetMessage } from "../../reducer/messages.reducer";
 import { actionResetSocket } from "../../reducer/socket.reducer";
 import CircleButton from "../Button/CircleButton";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -38,8 +39,35 @@ const Header = () => {
     dispatch(actionSetComponent(LIKE));
   };
 
+  const renderDropDownOptions = () => {
+    return (
+      <Menu
+        items={[
+          {
+            label: "History",
+            key: "1",
+            icon: <HeartOutlined className="text-red-50" />,
+            onClick: () => handleLike(),
+          },
+          {
+            label: "Settings",
+            key: "2",
+            icon: <SettingOutlined className="text-red-50" />,
+            onClick: () => handleSetting(),
+          },
+          {
+            label: "Logout",
+            key: "3",
+            icon: <LogoutOutlined className="text-red-50" />,
+            onClick: () => handleLogout(),
+          },
+        ]}
+      />
+    );
+  };
+
   return (
-    <div className="h-full w-full bg-gradient-to-r to-primaryColor from-red-400 px-6 flex justify-between items-center">
+    <div className="h-full w-full bg-gradient-to-r to-primaryColor from-red-400 px-2 lg:px-6 md:py-1 lg:py-0 flex justify-between items-center ">
       <div className="flex items-center">
         <Avatar
           shape="circle"
@@ -48,13 +76,14 @@ const Header = () => {
               ? user?.images[0]?.imageUrl
               : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
           }
-          className="border-[1.5px] border-white w-16 h-16"
+          className="border-[1.5px] border-white md:w-12 md:h-12 lg:w-16 lg:h-16 shrink-0"
         />
-        <h3 className="text-xl ml-2 text-red-50">
+        <h3 className="md:text-base lg:text-xl ml-2 text-red-50">
           {user?.profile?.fullName || "Welcome to HaUI Dating"}
         </h3>
       </div>
-      <div className="flex">
+
+      {/* <div className=" md:hidden lg:flex">
         <Tooltip title="See who like you">
           <CircleButton className="mr-2" onClick={handleLike}>
             <HeartOutlined className="text-red-50" />
@@ -70,7 +99,13 @@ const Header = () => {
             <LogoutOutlined className="text-red-50" />
           </CircleButton>
         </Tooltip>
-      </div>
+      </div> */}
+
+      <Popover content={renderDropDownOptions} trigger="click">
+        <CircleButton className="border-[1px] bg-red-400">
+          <BiDotsHorizontalRounded className="text-red-100 text-3xl" />
+        </CircleButton>
+      </Popover>
     </div>
   );
 };

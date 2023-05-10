@@ -9,13 +9,15 @@ const ListPeople = ({ type }: { type: string }) => {
   );
 
   return (
-    <div className="w-[100%] h-[740px] grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-y-scroll">
+    <div className="w-[100%] h-[740px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-scroll">
       {listTargetUsers?.map((el: any) => (
-        <div className="w-[380px] h-[570px] overflow-y-scroll border-[1px] rounded-xl">
-          <DetailPartner
-            key={el?.id}
-            userData={type === TypeHistory.LIKED_ME ? el.user : el.targetUser}
-          />
+        <div className="flex justify-center">
+          <div className="sm:w-[380px] sm:h-[500px] md:w-[380px] md:h-[400px] lg:w-[380px] lg:h-[570px] overflow-y-scroll border-[1px] rounded-xl">
+            <DetailPartner
+              key={el?.id}
+              userData={type === TypeHistory.LIKED_ME ? el.user : el.targetUser}
+            />
+          </div>
         </div>
       ))}
     </div>

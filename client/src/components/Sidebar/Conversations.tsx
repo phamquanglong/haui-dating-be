@@ -61,7 +61,9 @@ const Conversations = () => {
   return (
     <div className="h-full w-full bg-white flex flex-col justify-start items-center">
       <div className="flex justify-start w-full px-4 py-2">
-        <h6 className="font-bold text-lg text-primaryColor">Messages</h6>
+        <h6 className="font-bold md:text-base lg:text-lg text-primaryColor">
+          Messages
+        </h6>
       </div>
       <div className=" h-[75vh] w-full px-2 overflow-y-scroll">
         {!isEmpty(data) ? (
@@ -84,7 +86,7 @@ const Conversations = () => {
                     <div className="relative">
                       <Avatar
                         key={index}
-                        className="w-[4.5rem] h-[4.5rem] ml-2 relative"
+                        className="md:w-14 md:h-14 lg:w-[4.5rem] lg:h-[4.5rem] ml-2 relative"
                         src={
                           item?.avt
                             ? item?.avt
@@ -99,7 +101,9 @@ const Conversations = () => {
                     </div>
                   }
                   title={
-                    <h5 className="font-bold mt-4 text-xl">{item.title}</h5>
+                    <h5 className="font-bold md:mt-1 lg:mt-4 md:text-base lg:text-xl">
+                      {item.title}
+                    </h5>
                   }
                   description={item.desc}
                 />

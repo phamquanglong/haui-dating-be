@@ -16,7 +16,7 @@ const DetailPartner = ({ userData }: { userData?: IUser }) => {
     <>
       <Carousel autoplay>
         {userData?.images?.map((image) => (
-          <div className="w-full h-[400px] rounded-t-xl ">
+          <div className="w-full md:h-[270px] lg:h-[400px] rounded-t-xl ">
             <img
               className="w-full h-full object-cover rounded-xl pointer-events-none"
               src={image.imageUrl}
@@ -25,31 +25,37 @@ const DetailPartner = ({ userData }: { userData?: IUser }) => {
           </div>
         ))}
       </Carousel>
-      <div className="w-full h-10 rounded-t-xl flex justify-between mt-4 items-end px-4">
-        <h3 className="text-2xl text-stone-600 font-semibold">
-          {userData?.profile?.fullName || ""},{" "}
-          <span>
+      <div className="w-full h-10 rounded-t-xl flex justify-between md:mt-6 lg:mt-4 items-end px-4">
+        <h3 className="md:text-lg lg:text-2xl text-stone-600 font-semibold">
+          {userData?.profile?.fullName || ""}
+          {/* <span>
             {userData?.profile?.birthday
               ? `${getUserOld(userData.profile.birthday)}`
               : ""}
-          </span>
+          </span> */}
         </h3>
         <div className=" flex border-[1.5px] border-stone-500 rounded-3xl px-[4px] items-center">
-          <GoLocation className="text-stone-600  mr-1" />
-          <p className="text-stone-600 text-lg ">
+          <GoLocation className="text-stone-600 mr-1" />
+          <p className="text-stone-600 md:text-sm lg:text-lg ">
             {userData && currentUser
               ? `${getDistanceFromLatLonInKm(
                   currentUser?.profile?.latitude,
                   currentUser?.profile?.longitude,
                   userData?.profile?.latitude,
                   userData?.profile?.longitude
-                )} kms away`
+                )} kms`
               : ""}
           </p>
         </div>
       </div>
 
       <div className="px-4">
+        <p className="text-stone-600">
+          <span className="font-semibold">Age: </span>
+          {userData?.profile?.birthday
+            ? `${getUserOld(userData.profile.birthday)}`
+            : ""}
+        </p>
         <p className="text-stone-600">
           <span className="font-semibold">Gender: </span>
           {userData?.profile?.gender.toUpperCase() || ""}
@@ -58,6 +64,9 @@ const DetailPartner = ({ userData }: { userData?: IUser }) => {
           <span className="font-semibold">Birthday: </span>
           {userData?.profile?.birthday.split("/").reverse().join("/") || ""}
         </p>
+
+        <Divider></Divider>
+
         <p className="text-stone-600">
           <span className="font-semibold">Hobbies: </span>
         </p>
@@ -66,11 +75,9 @@ const DetailPartner = ({ userData }: { userData?: IUser }) => {
             <Tag color={getRandomColor()}>{userHobby.hobby?.name}</Tag>
           ))}
         </Space>
-      </div>
 
-      <Divider></Divider>
+        <Divider></Divider>
 
-      <div className="px-4">
         <p className="text-stone-600">
           <span className="font-semibold">About me </span>
         </p>

@@ -6,7 +6,9 @@ import MoreInfo from "./MoreInfo";
 import { KEY_CODE } from "../../../config/constant";
 import CircleButton from "../../Button/CircleButton";
 // import { useAppDispatch } from "../../../hook/useAppDispatch";
-import { BsArrowUp, BsArrowDown } from "react-icons/bs";
+// import { BsArrowUp, BsArrowDown } from "react-icons/bs";
+import { ImArrowUp, ImArrowDown } from "react-icons/im";
+import { Tooltip } from "antd";
 
 const Card = ({
   userData,
@@ -40,7 +42,7 @@ const Card = ({
         className={isShowMore === KEY_CODE?.ARROW_UP ? "" : "hidden"}
       />
       <CircleButton
-        className="absolute top-2 right-2 z-[10]"
+        className="absolute top-2 right-2 z-[10] border-none"
         onClick={() => {
           console.log("test");
           setShowMore(
@@ -51,9 +53,11 @@ const Card = ({
         }}
       >
         {isShowMore === KEY_CODE.ARROW_DOWN ? (
-          <BsArrowDown className="text-white font-black text-xl" />
+          <Tooltip title="More Info">
+            <ImArrowDown className="text-white font-black text-2xl animate-arrow-down-fall" />
+          </Tooltip>
         ) : (
-          <BsArrowUp className="text-white font-black text-xl" />
+          <ImArrowUp className="text-white font-black text-xl" />
         )}
       </CircleButton>
       {/* <div className="w-full h-[20%] absolute bottom-0 flex justify-around items-center px-10">

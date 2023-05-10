@@ -40,7 +40,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // await this.userSocketService.deleteAll();
 
     // this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
-    await this.senOnlinePartnersAndNotifyConnectedToPartners(userId);
+    await this.sendOnlinePartnersAndNotifyConnectedToPartners(userId);
   }
 
   async handleDisconnect(client: Socket) {
@@ -51,7 +51,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     console.log('all user (disconnect): ', allConnection);
 
     // this.server.emit(WS_EVENT.RECEIVE_USERS_ONLINE, allConnection);
-    await this.senOnlinePartnersAndNotifyConnectedToPartners(userId);
+    await this.sendOnlinePartnersAndNotifyConnectedToPartners(userId);
   }
 
   async validation(client: Socket) {
@@ -64,7 +64,7 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  async senOnlinePartnersAndNotifyConnectedToPartners(userId: number) {
+  async sendOnlinePartnersAndNotifyConnectedToPartners(userId: number) {
     await this.sendOnlinePartners(userId);
     const partnersOfUser = await this.userService.getAllPartnersByUserId(
       userId,

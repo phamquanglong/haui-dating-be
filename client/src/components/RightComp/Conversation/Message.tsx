@@ -64,7 +64,7 @@ const Message = ({
           placement={`${isMyMessage ? "left" : "right"}`}
         >
           <div
-            className={`relative right-0 max-w-[65%] p-2 ${
+            className={`relative right-0 max-w-[65%] break-words p-2 ${
               isMyMessage
                 ? "bg-primaryColor text-red-50 before:bfMyMess"
                 : "bg-[#ddd] before:bfOtherMess ml-2 text-gray-600"

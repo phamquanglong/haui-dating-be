@@ -1,11 +1,11 @@
-import { CloseOutlined, FlagOutlined, InfoOutlined } from "@ant-design/icons";
 import { Avatar, Tooltip } from "antd";
 import { find } from "lodash";
 import React, { useEffect, useRef } from "react";
 import { useAppSelector } from "../../../hook/useAppSelector";
-import CircleButton from "../../Button/CircleButton";
 import InputMessage from "./InputMessage";
 import Messages from "./Messages";
+import { AiFillInfoCircle, AiFillCloseCircle } from "react-icons/ai";
+import { MdFlagCircle } from "react-icons/md";
 
 const ChatBox = ({
   showInfo,
@@ -20,10 +20,6 @@ const ChatBox = ({
   );
   const selectedConversation = useAppSelector(
     (state) => state.conversationsReducer.selectedConversation
-  );
-  console.log(
-    "🚀 ~ file: ChatBox.tsx:24 ~ selectedConversation:",
-    selectedConversation
   );
   const listPartnersOnline = useAppSelector(
     (state) => state.partnerReducer.listPartnersOnline
@@ -41,7 +37,7 @@ const ChatBox = ({
 
   return (
     <div
-      className={`w-[calc(full_-400px)] h-[calc(100vh_-_4rem)] border-[0.125px] border-r-0 ${
+      className={`md:w-[calc(full_-270px)] lg:w-[calc(full_-400px)] h-[calc(100vh_-_4rem)] border-[0.125px] border-r-0 ${
         showInfo ? "rounded-l-lg" : "rounded-lg"
       }`}
     >
@@ -49,7 +45,7 @@ const ChatBox = ({
         <div className="flex items-center">
           <div className="relative">
             <Avatar
-              className="w-16 h-16"
+              className="md:w-14 md:h-14 lg:w-16 lg:h-16"
               shape="circle"
               src={
                 partner?.profile !== null && partner?.images?.length > 0
@@ -68,28 +64,28 @@ const ChatBox = ({
               <span className="bottom-0 right-1 absolute  w-4 h-4 bg-primaryColor border-2 border-white rounded-full"></span>
             )}
           </div>
-          <h3 className="text-2xl ml-4 font-medium">
+          <h3 className="md:text-xl lg:text-2xl ml-4 font-medium">
             {partner?.profile?.fullName}
           </h3>
         </div>
         <div className="flex justify-center items-center">
           <Tooltip title="Info">
-            <CircleButton
-              className="mr-2 border-primaryColor border-[2px] w-8 h-8 flex-shrink-0"
-              onClick={() => setShowInfo(!showInfo)}
-            >
-              <InfoOutlined className="text-primaryColor font-semibold text-xl" />
-            </CircleButton>
+            <div className="p-1 rounded-full hover:bg-gray-100">
+              <AiFillInfoCircle
+                className="text-primaryColor font-semibold text-3xl"
+                onClick={() => setShowInfo(!showInfo)}
+              />
+            </div>
           </Tooltip>
           <Tooltip title="Report this user.">
-            <CircleButton className="mr-2 border-primaryColor border-[2px] w-8 h-8 flex-shrink-0">
-              <FlagOutlined className="text-primaryColor font-semibold text-xl" />
-            </CircleButton>
+            <div className="p-1 rounded-full hover:bg-gray-100">
+              <MdFlagCircle className="text-primaryColor font-semibold text-[32px]" />
+            </div>
           </Tooltip>
           <Tooltip title="Unmatch">
-            <CircleButton className="border-primaryColor border-[2px] w-8 h-8 flex-shrink-0">
-              <CloseOutlined className="text-primaryColor font-semibold text-xl" />
-            </CircleButton>
+            <div className="p-1 rounded-full hover:bg-gray-100">
+              <AiFillCloseCircle className="text-primaryColor font-semibold text-3xl" />
+            </div>
           </Tooltip>
         </div>
       </div>

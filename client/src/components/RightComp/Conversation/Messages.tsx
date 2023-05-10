@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import { find, isEmpty } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../../hook/useAppDispatch";
 import { useAppSelector } from "../../../hook/useAppSelector";
@@ -36,15 +36,17 @@ const Messages = ({
 
   useEffect(() => {
     if (!isEmpty(socket)) {
-      socket.receiveMessage((data: any) =>
-        dispatch(pushNewMessageAction(data))
-      );
+      socket.receiveMessage((data: any) => {
+        if (data && !find(listMessages, { id: data?.id })) {
+          dispatch(pushNewMessageAction(data));
+        }
+      });
       socket.receiveTypingStatus((data: any) => {
         if (selectedConversation?.id === data?.conversationId)
           setTypingStatus(data.isTyping);
       });
     }
-  }, [socket, dispatch, selectedConversation?.id]);
+  }, [socket, dispatch, selectedConversation?.id, listMessages]);
 
   useEffect(() => {
     if (isTyping)

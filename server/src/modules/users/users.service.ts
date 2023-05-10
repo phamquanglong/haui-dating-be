@@ -24,7 +24,7 @@ export class UsersService {
     private readonly userImageService: UserImagesService,
     private readonly userSettingService: UserSettingsService,
     private readonly userHobbiesService: UserHobbiesService,
-    private cloudinaryService: CloudinaryService,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   async getAll() {
