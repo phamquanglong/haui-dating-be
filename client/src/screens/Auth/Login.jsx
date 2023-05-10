@@ -18,29 +18,20 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r to-primaryColor from-red-400 h-screen flex justify-center items-center ">
-      {/* <div className="bg-[url('https://dean1665.vn/uploads/school/t78758.jpg')] bg-no-repeat bg-cover backdrop-blur-md h-screen flex justify-center items-center "> */}
-      <div className="w-screen md:w-5/6 h-screen md:h-5/6 md:rounded-lg flex md:shadow-2xl md:shadow-red-500/40">
-        <div className="w-3/5 h-full">
-          <img
-            className="w-full h-full object-cover rounded-l-lg"
-            src="https://picsum.photos/600/600"
-            // src="https://dean1665.vn/uploads/school/t78758.jpg"
-            alt="img"
-          />
-        </div>
-        <div className="w-2/5 h-full bg-white rounded-none rounded-r-lg flex justify-center items-start">
-          <div className="w-2/3 md:w-2/3 flex-col justify-center items-center mt-14 ">
-            <div className="m-auto bg-[url('https://inkythuatso.com/uploads/images/2021/12/logo-dai-hoc-cong-nghiep-ha-noi-inkythuatso-01-21-15-51-20.jpg')] w-[64px] h-[64px] bg-cover"></div>
+    <div className="bg-[url('https://source.unsplash.com/random/1920x1080/?girl,couple,romance,love,sexy')] h-screen flex justify-center items-center ">
+      <div className="w-screen md:w-2/3 h-screen md:h-2/3 md:rounded-lg flex justify-center ">
+        <div className="w-2/5 h-full bg-white rounded-lg flex justify-center items-start bg-opacity-70 border-[1px]">
+          <div className="w-2/3 md:w-2/3 flex-col justify-center items-center mt-12 ">
+            <div className="m-auto bg-[url('https://cdn-01.dhcnhn.vn/img/logo-haui-size.png')] w-[64px] h-[64px] bg-cover"></div>
             <h1 className="text-center font-semibold md:text-3xl mt-1">
               HaUI Dating
             </h1>
-            <p className="text-xs md:text-sm text-slate-600 mt-2 text-center">
-              Wellcome back! Please enter your details.
+            <p className="text-xs md:text-sm text-gray-700 mt-2 text-center">
+              Welcome back! Please enter your details.
             </p>
             <Form
               form={formRef}
-              className="mt-16 w-full"
+              className="mt-6 w-full"
               layout="vertical"
               style={{ maxWidth: 600 }}
               size="large"
