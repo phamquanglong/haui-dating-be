@@ -37,8 +37,10 @@ const ChatBox = ({
 
   return (
     <div
-      className={`md:w-[calc(full_-270px)] lg:w-[calc(full_-400px)] h-[calc(100vh_-_4rem)] border-[0.125px] border-r-0 ${
-        showInfo ? "rounded-l-lg" : "rounded-lg"
+      className={`h-[calc(100vh_-_4rem)] border-[0.125px]  ${
+        showInfo
+          ? "rounded-l-lg md:w-1/2 lg:w-2/3 border-r-0"
+          : "rounded-lg w-full"
       }`}
     >
       <div className="h-[10%] w-full border-b-[0.25px] px-6 flex justify-between items-center">

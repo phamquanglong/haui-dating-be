@@ -9,7 +9,7 @@ import Setting from "./Setting";
 function RightComp() {
   const component = useAppSelector((state) => state.layoutReducer.component);
   return (
-    <div className="h-screen w-full bg-white p-8">
+    <div className="w-3/4 h-full bg-white p-8">
       {component === EXPLORE && <Explore />}
       {component === SETTING && <Setting />}
       {component === CHATTING && <Conversation />}

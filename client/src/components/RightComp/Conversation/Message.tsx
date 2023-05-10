@@ -1,8 +1,10 @@
 import React from "react";
-import { Avatar, Tooltip } from "antd";
+import { Avatar, Menu, Popover, Tooltip } from "antd";
 import dayjs from "dayjs";
 import { useAppSelector } from "../../../hook/useAppSelector";
 import TypingIndicator from "./TypingIndicator";
+import CircleButton from "../../Button/CircleButton";
+import { BiDotsHorizontalRounded } from "react-icons/bi";
 
 const Message = ({
   message,
@@ -23,9 +25,26 @@ const Message = ({
       ? selectedConversation?.userTwo
       : selectedConversation?.userOne;
 
+  const renderDropDownOptions = () => {
+    return (
+      <Menu
+        items={[
+          {
+            key: "1",
+            label: "Recall message",
+          },
+          {
+            key: "2",
+            label: "Copy",
+          },
+        ]}
+      />
+    );
+  };
+
   return (
     <div
-      className={`flex relative w-full my-[24px] ${
+      className={`flex relative w-full my-[23px] ${
         isMyMessage ? "justify-end" : "justify-start"
       }`}
     >
