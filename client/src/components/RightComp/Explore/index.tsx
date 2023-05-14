@@ -48,12 +48,11 @@ const Explore = () => {
         targetUserId: nameToDelete,
       })
     ).then((result: any) => {
-      if (!result?.payload?.data) {
-        console.log("🚀 ~ file: index.tsx:60 ~ ).then ~ result:", result);
+        setTimeout(() => {
         dispatch(callApiGetSuggestUsers());
         dispatch(callApiGetInfo());
         dispatch(callApiGetAllConversations());
-      }
+        }, 1000)
     });
 
     updateCurrentIndex(index - 1);

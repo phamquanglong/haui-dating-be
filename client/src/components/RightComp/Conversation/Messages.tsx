@@ -1,4 +1,4 @@
-import { find, isEmpty } from "lodash";
+import { isEmpty } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../../hook/useAppDispatch";
 import { useAppSelector } from "../../../hook/useAppSelector";
@@ -37,9 +37,10 @@ const Messages = ({
   useEffect(() => {
     if (!isEmpty(socket)) {
       socket.receiveMessage((data: any) => {
-        console.log('data',data)
-        if (data) {
-          dispatch(pushNewMessageAction(data));
+        if (data ) {
+          if (selectedConversation?.id === data?.conversation?.id){
+            dispatch(pushNewMessageAction(data));
+          }
         }
       });
       socket.receiveTypingStatus((data: any) => {
