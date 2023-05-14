@@ -4,6 +4,7 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 import MessagesApi from "../api/messages.api";
+import {find} from "lodash";
 
 interface State {
   listMessages: any;
@@ -67,7 +68,9 @@ export const messagesReducer = createReducer(initState, (builder) => {
     });
 
   builder.addCase(pushNewMessageAction, (state, { payload }) => {
-    state.listMessages = [...state.listMessages, payload];
+      if (!find(state.listMessages, {id: payload?.id})) {
+          state.listMessages = [...state.listMessages, payload];
+      }
   });
 
   builder.addCase(actionResetMessage, (state, { payload }) => {

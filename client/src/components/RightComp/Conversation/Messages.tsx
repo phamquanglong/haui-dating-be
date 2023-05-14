@@ -37,7 +37,8 @@ const Messages = ({
   useEffect(() => {
     if (!isEmpty(socket)) {
       socket.receiveMessage((data: any) => {
-        if (data && !find(listMessages, { id: data?.id })) {
+        console.log('data',data)
+        if (data) {
           dispatch(pushNewMessageAction(data));
         }
       });
@@ -46,7 +47,7 @@ const Messages = ({
           setTypingStatus(data.isTyping);
       });
     }
-  }, [socket, dispatch, selectedConversation?.id, listMessages]);
+  }, [socket, dispatch, selectedConversation?.id]);
 
   useEffect(() => {
     if (isTyping)

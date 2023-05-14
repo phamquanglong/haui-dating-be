@@ -20,7 +20,7 @@ import { UserSocketModule } from './modules/user-socket/user-socket.module';
       host: 'localhost',
       port: 5432,
       username: 'yul',
-      password: 'yul119',
+      password: '.yul',
       database: 'tinder',
       // entities: [__dirname + './**/*.entity.{js,ts}'],
       autoLoadEntities: true,

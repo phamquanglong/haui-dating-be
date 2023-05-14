@@ -13,6 +13,7 @@ import { UserSettingsService } from '../user-settings/user-settings.service';
 import { UserInformationRequestDto } from './dto/user-information.dto';
 import { User } from './user.entity';
 import { ConversationsService } from '../conversations/conversations.service';
+import { Conversation } from '../conversations/conversations.entity';
 
 @Injectable()
 export class UsersService {
@@ -27,19 +28,18 @@ export class UsersService {
     private readonly cloudinaryService: CloudinaryService,
   ) {}
 
-  async getAll() {
+  async getAll(): Promise<User[]> {
     return await this.usersRepository.find({
       relations: ['profile', 'images', 'settings', 'userHobbies'],
     });
   }
 
-  async getAllPartnersByUserId(userId) {
+  async getAllPartnersByUserId(userId): Promise<number[]> {
     const conversationsOfUser =
       await this.conversationService.getAllConversationByUserId(userId);
-    const partnersOfUser = conversationsOfUser.map((conv) =>
+    return conversationsOfUser.map((conv: Conversation): number =>
       userId === conv?.userOne?.id ? conv?.userTwo?.id : conv?.userOne?.id,
     );
-    return partnersOfUser;
   }
 
   async getAllUserSuggest(currentUser: User) {
@@ -147,14 +147,12 @@ export class UsersService {
 
     const settings = await this.userSettingService.create(settingsReq);
 
-    const updatedUser = await this.updateUser(userId, {
+    return await this.updateUser(userId, {
       userHobbies,
       profile,
       images,
       settings,
     });
-
-    return updatedUser;
   }
 
   async updateInformation(userId: number, body: UserInformationRequestDto) {
@@ -162,7 +160,7 @@ export class UsersService {
 
     const profileReq = body.profile;
     const hobbiesReq = body.hobbies;
-    const imagesReq = body.images;
+    let imagesReq = body.images;
     const settingsReq = body.settings;
 
     const profile = await this.profileService.updateProfile(
@@ -185,7 +183,7 @@ export class UsersService {
           ),
         ));
 
-      var images = await Promise.all(
+      imagesReq = await Promise.all(
         imagesReq.map(
           async (el) => await this.userImageService.create({ imageUrl: el }),
         ),
@@ -206,14 +204,12 @@ export class UsersService {
       ),
     );
 
-    const updatedUser = await this.updateUser(userId, {
+    return await this.updateUser(userId, {
       userHobbies,
       profile,
-      ...(imagesReq && { images }),
+      ...(imagesReq && { imagesReq }),
       settings,
     });
-
-    return updatedUser;
   }
 
   async uploadImageToCloudinary(file: Express.Multer.File) {
