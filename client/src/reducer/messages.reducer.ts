@@ -4,10 +4,10 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 import MessagesApi from "../api/messages.api";
-import {find} from "lodash";
+import { find } from "lodash";
 
 interface State {
-  listMessages: any;
+  listMessages: any[];
   loading: boolean;
   loadingPost: boolean;
   loadingUpdate: boolean;
@@ -49,6 +49,7 @@ export const pushNewMessageAction = createAction<any>("MESSAGE.PUSH_NEW_MESS");
 
 export const actionResetMessage = createAction("MESSAGE.RESET");
 
+export const deleteMessageAction = createAction<any>("MESSAGE.DELETE");
 export const messagesReducer = createReducer(initState, (builder) => {
   builder
     .addCase(callApiGetAllMessagesOfConversation.pending, (state) => {
@@ -68,9 +69,17 @@ export const messagesReducer = createReducer(initState, (builder) => {
     });
 
   builder.addCase(pushNewMessageAction, (state, { payload }) => {
-      if (!find(state.listMessages, {id: payload?.id})) {
-          state.listMessages = [...state.listMessages, payload];
-      }
+    if (!find(state.listMessages, { id: payload?.id })) {
+      state.listMessages = [...state.listMessages, payload];
+    }
+  });
+
+  builder.addCase(deleteMessageAction, (state, { payload }) => {
+    state.listMessages = state.listMessages.map((mess) =>
+      mess?.id === payload?.messId
+        ? { ...mess, userDelete: payload?.userDelete }
+        : mess
+    );
   });
 
   builder.addCase(actionResetMessage, (state, { payload }) => {

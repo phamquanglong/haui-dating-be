@@ -10,6 +10,10 @@ export interface ISocketService {
   setTypingStatus: (status: boolean, conversationId: number) => void;
   receiveTypingStatus: (listener: any) => void;
   receiveListUserOnline: (listener: any) => void;
+  seenMessage: (conversationId: number) => void;
+  receiveUpdateIsSeenMessage: (listener: any) => void;
+  deleteMessage: (messageId: number, conversationId: number) => void;
+  receiveDeleteMessage: (listener: any) => void;
 }
 
 export class SocketService implements ISocketService {
@@ -46,5 +50,19 @@ export class SocketService implements ISocketService {
 
   receiveListUserOnline(listener: any) {
     this.socket.on(WS_EVENT.RECEIVE_USERS_ONLINE, listener);
+  }
+  seenMessage(conversationId: number) {
+    this.socket.emit(WS_EVENT.SEEN_MESSAGE, { conversationId });
+  }
+
+  receiveUpdateIsSeenMessage(listener: any) {
+    this.socket.on(WS_EVENT.RECEIVE_UPDATE_IS_SEEN_MESSAGE, listener);
+  }
+  deleteMessage(messageId: number, conversationId: number) {
+    this.socket.emit(WS_EVENT.DELETE_MESSAGE, { messageId, conversationId });
+  }
+
+  receiveDeleteMessage(listener: any) {
+    this.socket.on(WS_EVENT.RECEIVE_DELETE_MESSAGE, listener);
   }
 }

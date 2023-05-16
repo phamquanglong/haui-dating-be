@@ -42,6 +42,12 @@ const InputMessage = () => {
     }
   };
 
+  const handeUpdateIsSeenMessage = () => {
+    if (!isEmpty(socket)) {
+      socket.seenMessage(selectedConversation?.id);
+    }
+  };
+
   return (
     <div className="h-[10%] w-full flex justify-between items-center px-8">
       <input
@@ -51,6 +57,7 @@ const InputMessage = () => {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleEnter}
+        onFocus={handeUpdateIsSeenMessage}
       />
       <Button
         type="primary"

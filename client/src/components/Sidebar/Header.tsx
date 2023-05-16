@@ -76,9 +76,9 @@ const Header = () => {
               ? user?.images[0]?.imageUrl
               : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
           }
-          className="border-[1px] lg:border-[1.5px] border-white w-14 h-14 lg:w-16 lg:h-16 shrink-0"
+          className="border-[1px] lg:border-[1.5px] border-white w-14 h-14 lg:w-20 lg:h-20 shrink-0"
         />
-        <h3 className="text-sm md:text-base lg:text-xl ml-2 text-red-50">
+        <h3 className="text-sm lg:text-2xl ml-2 text-red-50">
           {user?.profile?.fullName || "Welcome to HaUI Dating"}
         </h3>
       </div>

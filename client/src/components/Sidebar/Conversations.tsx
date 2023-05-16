@@ -96,7 +96,7 @@ const Conversations = () => {
                       {find(listPartnersOnline, {
                         userId: item?.partnerId,
                       }) && (
-                        <span className="bottom-0 right-1 absolute w-3 h-3  lg:w-4 lg:h-4 bg-primaryColor border-2 border-white rounded-full"></span>
+                        <span className="bottom-1 right-1 absolute w-3 h-3  lg:w-4 lg:h-4 bg-primaryColor border-2 border-white rounded-full"></span>
                       )}
                     </div>
                   }

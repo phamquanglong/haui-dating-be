@@ -30,16 +30,15 @@ export class ConversationsService {
         'userTwo.userHobbies',
         'userTwo.userHobbies.hobby',
       ],
-      order: { updatedAt: 'DESC' },
+      order: { updatedAt: 'ASC' },
     });
   }
 
   async create(userOne: User, userTwo: User) {
-    const newConversation = await this.conversationRepository.save({
+    return await this.conversationRepository.save({
       userOne,
       userTwo,
     });
-    return newConversation;
   }
 
   async getConversationById(id: number) {

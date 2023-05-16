@@ -136,4 +136,73 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.server.to(userSocket.socketId).emit(WS_EVENT.TYPING_RES, payload);
     });
   }
+  @SubscribeMessage(WS_EVENT.SEEN_MESSAGE)
+  async seenMessage(client: Socket, payload: { conversationId: number }) {
+    const userId = await this.validation(client);
+    const user = await this.userService.getUser({ id: userId });
+    const conversation = await this.conversationService.getConversationById(
+      payload.conversationId,
+    );
+
+    const listMessageOfPartner = (
+      await this.messageService.getMessagesByConversationId(
+        payload?.conversationId,
+      )
+    ).filter((mess) => mess?.sender?.id !== userId);
+
+    await Promise.all(
+      listMessageOfPartner.map(
+        async (mess) =>
+          await this.messageService.updateMessage(mess?.id, user, {
+            isSeen: true,
+          }),
+      ),
+    );
+
+    const listUserReceiveMessage = [
+      conversation.userOne.id,
+      conversation.userTwo.id,
+    ].filter((id) => id !== userId);
+    const listUserSocket = await this.userSocketService.findSocketsByUserIds(
+      listUserReceiveMessage,
+    );
+
+    listUserSocket.map((userSocket) => {
+      this.server
+        .to(userSocket.socketId)
+        .emit(WS_EVENT.RECEIVE_UPDATE_IS_SEEN_MESSAGE, { isSeen: true });
+    });
+  }
+  @SubscribeMessage(WS_EVENT.DELETE_MESSAGE)
+  async deleteMessage(
+    client: Socket,
+    payload: { messageId: number; conversationId: number },
+  ) {
+    const userId = await this.validation(client);
+    const user = await this.userService.getUser({ id: userId });
+    const conversation = await this.conversationService.getConversationById(
+      payload.conversationId,
+    );
+
+    await this.messageService.updateMessage(payload?.messageId, user, {
+      isDelete: true,
+    });
+
+    const listUserReceiveMessage = [
+      conversation.userOne.id,
+      conversation.userTwo.id,
+    ];
+    const listUserSocket = await this.userSocketService.findSocketsByUserIds(
+      listUserReceiveMessage,
+    );
+
+    listUserSocket.map((userSocket) => {
+      this.server
+        .to(userSocket.socketId)
+        .emit(WS_EVENT.RECEIVE_DELETE_MESSAGE, {
+          messId: payload?.messageId,
+          userDelete: userId,
+        });
+    });
+  }
 }

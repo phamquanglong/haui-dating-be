@@ -70,7 +70,7 @@ const Explore = () => {
             <TinderCard
               ref={childRefs[index]}
               className="absolute"
-              onSwipe={(dir) => swiped(dir, user.id, index)}
+              onCardLeftScreen={(dir) => swiped(dir, user.id, index)}
               key={user.id}
               preventSwipe={["up", "down"]}
             >

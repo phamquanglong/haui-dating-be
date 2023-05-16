@@ -12,6 +12,7 @@ module.exports = {
       },
       gridTemplateRows: {
         sidebar: "1.25fr 1.5fr 10fr",
+        sidebarMd: "1.25fr 1.5fr 15fr",
       },
 
       keyframes: {

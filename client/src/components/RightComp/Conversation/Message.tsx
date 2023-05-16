@@ -1,24 +1,30 @@
-import React, { useState } from "react";
-import { Avatar, Menu, message as antdMess, Popover, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Divider,
+  Menu,
+  message as antdMess,
+  Popover,
+  Tooltip,
+} from "antd";
 import dayjs from "dayjs";
 import { useAppSelector } from "../../../hook/useAppSelector";
 import TypingIndicator from "./TypingIndicator";
 import CircleButton from "../../Button/CircleButton";
 import { AiOutlineMore } from "react-icons/ai";
-import { max } from "lodash";
+import { isEmpty, max } from "lodash";
 
 const Message = ({
   message,
   isMyMessage,
   isTyping,
-  isYourLastMessage,
 }: {
   message?: any;
   isMyMessage?: boolean;
   isTyping?: boolean;
-  isYourLastMessage?: boolean;
 }) => {
   const currentUser = useAppSelector((state) => state.authReducer.user);
+  const socket = useAppSelector((state) => state.socketReducer.socket);
   const selectedConversation = useAppSelector(
     (state) => state.conversationsReducer.selectedConversation
   );
@@ -26,31 +32,61 @@ const Message = ({
     (state) => state.messagesReducer.listMessages
   );
   const [isShowMore, setShowMore] = useState(false);
+  const [isSeen, setIsSeen] = useState(false);
 
   const listIdOfYourMessage = listMessages
     .filter((mess: any) => currentUser?.id === mess?.sender?.id)
     .map((mess: any) => mess?.id);
-  console.log(listIdOfYourMessage);
 
   const partner =
     selectedConversation?.userOne?.id === currentUser?.id
       ? selectedConversation?.userTwo
       : selectedConversation?.userOne;
 
-  const renderDropDownOptions = () => {
+  useEffect(() => {
+    if (!isEmpty(socket)) {
+      socket.receiveUpdateIsSeenMessage((data: any) => {
+        if (data?.isSeen === true) {
+          setIsSeen(true);
+        }
+      });
+    }
+  }, [socket]);
+  const renderDropDownYourOptions = () => {
     return (
       <Menu
         items={[
           {
             key: "1",
             label: "Recall message",
+            onClick: () => {
+              if (!isEmpty(socket)) {
+                socket.deleteMessage(message?.id, selectedConversation?.id);
+              }
+            },
           },
           {
             key: "2",
             label: "Copy message",
             onClick: () => {
               navigator.clipboard.writeText(message?.message);
-              antdMess.success("Copied to clipboard", 2);
+              antdMess.success("Copied to clipboard", 200);
+            },
+          },
+        ]}
+      />
+    );
+  };
+  const renderDropDownPartnerOptions = () => {
+    return (
+      <Menu
+        items={[
+          {
+            key: "2",
+            label: "Copy message",
+            onClick: () => {
+              navigator.clipboard.writeText(message?.message);
+              antdMess.success("Copied to clipboard", 200);
             },
           },
         ]}
@@ -67,11 +103,6 @@ const Message = ({
       {!isMyMessage && (
         <Avatar
           className="-mt-6 -ml-2 mr-4 w-14 h-14"
-          // src={
-          //   message?.sender?.images?.length > 0
-          //     ? message?.sender?.images[0]?.imageUrl
-          //     : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
-          // }
           src={
             partner?.profile !== null && partner?.images?.length > 0
               ? partner?.images[0]?.imageUrl
@@ -90,6 +121,14 @@ const Message = ({
         >
           <TypingIndicator />
         </div>
+      ) : message?.userDelete ? (
+        <Divider orientation="center">
+          <p className="text-sm text-gray-400 font-light lg:font-normal">
+            {message?.userDelete === currentUser?.id
+              ? "You recall a message"
+              : `${partner?.profile?.fullName} recall a message`}
+          </p>
+        </Divider>
       ) : (
         <div
           className={`relative right-0 max-w-[65%] break-words p-2 ${
@@ -108,9 +147,14 @@ const Message = ({
             <p className="text-sm md:text-base text-left">{message?.message}</p>
           </Tooltip>
           <Popover
-            content={renderDropDownOptions}
+            content={
+              isMyMessage
+                ? renderDropDownYourOptions
+                : renderDropDownPartnerOptions
+            }
             trigger="click"
             placement={`${isMyMessage ? "left" : "right"}`}
+            onOpenChange={() => setShowMore(false)}
           >
             <CircleButton
               className={`${
@@ -124,12 +168,12 @@ const Message = ({
             </CircleButton>
           </Popover>
           {isMyMessage && message?.id === max(listIdOfYourMessage) ? (
-            message?.isSeen ? (
-              <p className="absolute -bottom-6 right-0 text-sm text-gray-600">
+            message?.isSeen || isSeen ? (
+              <p className="absolute -bottom-4 lg:-bottom-6 right-0 text-xs font-light lg:font-normal text-gray-400">
                 Read
               </p>
             ) : (
-              <p className="absolute -bottom-6 right-0 text-xs text-primaryColor">
+              <p className="absolute -bottom-4 lg:-bottom-6 right-0 text-xs font-light lg:font-normal text-primaryColor">
                 Unread
               </p>
             )

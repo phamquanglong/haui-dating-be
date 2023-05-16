@@ -1,11 +1,14 @@
-import {createAction, createAsyncThunk, createReducer} from "@reduxjs/toolkit";
+import {
+  createAction,
+  createAsyncThunk,
+  createReducer,
+} from "@reduxjs/toolkit";
 import UserApi from "../api/user.api";
 import {
   IUpdateUserInformationRequest,
   IUser,
   IUserInformationRequest,
 } from "../interface/User";
-import chooseImg from "../components/UserInfo/ChooseImg";
 
 interface State {
   loadingUpload: boolean;
@@ -69,7 +72,7 @@ export const callApiGetSuggestUsers = createAsyncThunk(
   }
 );
 
-export const resetChooseImage = createAction<any>("USER.RESET_CHOOSE_IMG")
+export const resetChooseImage = createAction<any>("USER.RESET_CHOOSE_IMG");
 
 export const userReducer = createReducer(initState, (builder) => {
   builder
@@ -121,7 +124,7 @@ export const userReducer = createReducer(initState, (builder) => {
       state.loadingList = false;
       state.listSuggestUsers = [];
     });
-  builder.addCase(resetChooseImage,(state, {payload}) => {
-      state.imageUrl = payload
-  })
+  builder.addCase(resetChooseImage, (state, { payload }) => {
+    state.imageUrl = payload;
+  });
 });
