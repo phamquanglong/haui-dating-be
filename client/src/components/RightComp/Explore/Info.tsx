@@ -7,14 +7,18 @@ import { useAppSelector } from "../../../hook/useAppSelector";
 const Info = ({
   userData,
   className,
+  width,
+  height,
 }: {
   userData?: IUser;
   className: string;
+  width: string;
+  height: string;
 }) => {
   const currentUser = useAppSelector((state) => state.authReducer.user);
 
   return (
-    <div className={`w-full h-full relative ${className}`}>
+    <div className={`${width} ${height} relative ${className}`}>
       <div className="absolute top-0 w-full h-[10%] z-[2] rounded-t-xl flex flex-col mt-1 items-start px-4">
         <h3 className="text-2xl text-white font-semibold">
           {userData?.profile?.fullName || ""},{" "}
@@ -35,10 +39,12 @@ const Info = ({
             : ""}
         </p>
       </div>
-      <div className="w-full h-[600px] rounded-xl bg-gradient-to-b from-black from-0% via-slate-50 via-10% to-white to-100% opacity-20  absolute top-0 z-[1]"></div>
+      <div
+        className={`${width} ${height}  rounded-xl bg-gradient-to-b from-black from-0% via-slate-50 via-10% to-white to-100% opacity-20  absolute top-0 z-[1]`}
+      ></div>
       <Carousel autoplay>
         {userData?.images.map((image) => (
-          <div className="w-full h-[600px] rounded-xl ">
+          <div className={`${width} ${height} rounded-xl`}>
             <img
               className="w-full h-full object-cover rounded-xl pointer-events-none"
               src={image.imageUrl}

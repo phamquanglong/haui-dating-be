@@ -64,7 +64,7 @@ const Hobbies = ({ formRef }: { formRef: any }) => {
                     <Col span={6}>
                       <Tooltip title={hobby?.name}>
                         <div
-                          className={`h-[200px] w-full  ${
+                          className={`h-[180px] w-full  ${
                             !formRef
                               .getFieldValue("hobbies")
                               ?.includes(hobby?.id)

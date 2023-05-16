@@ -13,7 +13,7 @@ const Sidebar = () => {
   }, [dispatch]);
 
   return (
-    <div className="h-full w-1/4 grid grid-rows-sidebar border-r-[1px] border-stone-300">
+    <div className="h-screen w-1/4 grid grid-rows-sidebar border-r-[1px] border-stone-300">
       <Header />
       <Explore />
       <Conversations />

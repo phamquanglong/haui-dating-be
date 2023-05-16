@@ -12,8 +12,7 @@ const Home = () => {
   if (user?.profile === null && !loading) navigate("/profile");
 
   return (
-    // <div className="grid grid-cols-home overflow-x-hidden w-screen h-screen">
-    <div className="flex flex-row overflow-x-hidden w-screen h-screen">
+    <div className="flex flex-row overflow-x-hidden bg-black w-screen h-screen">
       <Sidebar />
       <RightComp />
     </div>

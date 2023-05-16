@@ -47,7 +47,7 @@ const ChatBox = ({
         <div className="flex items-center">
           <div className="relative">
             <Avatar
-              className="md:w-14 md:h-14 lg:w-16 lg:h-16"
+              className="w-12 h-12 lg:w-14 lg:h-14"
               shape="circle"
               src={
                 partner?.profile !== null && partner?.images?.length > 0
@@ -58,12 +58,12 @@ const ChatBox = ({
             {find(listPartnersOnline, {
               userId: selectedConversation?.userOne?.id,
             }) && (
-              <span className="bottom-0 right-1 absolute  w-4 h-4 bg-primaryColor border-2 border-white rounded-full"></span>
+              <span className="bottom-0 right-1 absolute w-3 h-3 lg:w-4 lg:h-4 bg-primaryColor border-2 border-white rounded-full"></span>
             )}
             {find(listPartnersOnline, {
               userId: selectedConversation?.userTwo?.id,
             }) && (
-              <span className="bottom-0 right-1 absolute  w-4 h-4 bg-primaryColor border-2 border-white rounded-full"></span>
+              <span className="bottom-0 right-1 absolute w-3 h-3 lg:w-4 lg:h-4 bg-primaryColor border-2 border-white rounded-full"></span>
             )}
           </div>
           <h3 className="md:text-xl lg:text-2xl ml-4 font-medium">

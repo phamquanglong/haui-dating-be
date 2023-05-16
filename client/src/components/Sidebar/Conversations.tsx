@@ -60,12 +60,12 @@ const Conversations = () => {
 
   return (
     <div className="h-full w-full bg-white flex flex-col justify-start items-center">
-      <div className="flex justify-start w-full px-4 py-2">
-        <h6 className="font-bold md:text-base lg:text-lg text-primaryColor">
+      <div className="h-12 flex justify-start w-full px-4 py-2">
+        <h6 className="font-bold text-base lg:text-lg text-primaryColor">
           Messages
         </h6>
       </div>
-      <div className=" h-[75vh] w-full px-2 overflow-y-scroll">
+      <div className="h-[65vh] w-full px-2 overflow-y-scroll">
         {!isEmpty(data) ? (
           <List
             itemLayout="horizontal"
@@ -86,7 +86,7 @@ const Conversations = () => {
                     <div className="relative">
                       <Avatar
                         key={index}
-                        className="md:w-14 md:h-14 lg:w-[4.5rem] lg:h-[4.5rem] ml-2 relative"
+                        className="w-14 h-14 lg:w-[4.5rem] lg:h-[4.5rem] ml-2 relative"
                         src={
                           item?.avt
                             ? item?.avt
@@ -96,12 +96,12 @@ const Conversations = () => {
                       {find(listPartnersOnline, {
                         userId: item?.partnerId,
                       }) && (
-                        <span className="bottom-0 right-1 absolute  w-4 h-4 bg-primaryColor border-2 border-white rounded-full"></span>
+                        <span className="bottom-0 right-1 absolute w-3 h-3  lg:w-4 lg:h-4 bg-primaryColor border-2 border-white rounded-full"></span>
                       )}
                     </div>
                   }
                   title={
-                    <h5 className="font-bold md:mt-1 lg:mt-4 md:text-base lg:text-xl">
+                    <h5 className="font-bold mt-1 lg:mt-4 text-base lg:text-xl">
                       {item.title}
                     </h5>
                   }

@@ -4,7 +4,10 @@ import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../hook/useAppDispatch";
 import { useAppSelector } from "../../hook/useAppSelector";
-import {callApiUploadImage, resetChooseImage} from "../../reducer/user.reducer";
+import {
+  callApiUploadImage,
+  resetChooseImage,
+} from "../../reducer/user.reducer";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -30,9 +33,9 @@ const ChooseImg = ({ formRef }: { formRef: any }) => {
         ...formRef?.getFieldValue("images"),
         image?.url,
       ]);
+      dispatch(resetChooseImage({}));
     }
-    dispatch(resetChooseImage({}))
-  }, [image, formRef, loading]);
+  }, [image, dispatch, formRef, loading]);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     dispatch(

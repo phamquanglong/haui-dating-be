@@ -48,20 +48,22 @@ const Explore = () => {
         targetUserId: nameToDelete,
       })
     ).then((result: any) => {
-        setTimeout(() => {
+      setTimeout(() => {
         dispatch(callApiGetSuggestUsers());
         dispatch(callApiGetInfo());
         dispatch(callApiGetAllConversations());
-        }, 1000)
+      }, 1000);
     });
 
     updateCurrentIndex(index - 1);
   };
 
   return (
-    <div className="w-full h-full  flex flex-col justify-start items-center overflow-x-hidden">
-      <div className=" bg-[url('https://inkythuatso.com/uploads/images/2021/12/logo-dai-hoc-cong-nghiep-ha-noi-inkythuatso-01-21-15-51-20.jpg')] w-[64px] h-[64px] bg-cover mt-6"></div>
-      <div className="h-[75%] mt-6 flex justify-center items-center">
+    <div className="w-full h-full flex flex-col justify-start items-center overflow-x-hidden">
+      <div className="h-[20%]">
+        <div className=" bg-[url('https://inkythuatso.com/uploads/images/2021/12/logo-dai-hoc-cong-nghiep-ha-noi-inkythuatso-01-21-15-51-20.jpg')] w-[64px] h-[64px] bg-cover"></div>
+      </div>
+      <div className="h-[70%] mt-6 flex justify-center items-center">
         {isEmpty(listSuggestUsers) && <Empty />}
         {!isEmpty(listSuggestUsers) &&
           listSuggestUsers.map((user, index) => (
@@ -72,11 +74,11 @@ const Explore = () => {
               key={user.id}
               preventSwipe={["up", "down"]}
             >
-              <Card userData={user} width="w-[400px]" height="h-[600px]" />
+              <Card userData={user} width="w-[360px]" height="h-[540px]" />
             </TinderCard>
           ))}
       </div>
-      <div className="w-full h-[10%] text-gray-400 mt-4 flex justify-center items-center">
+      <div className="w-full h-[10%] text-gray-400 mt-20 flex justify-center items-center">
         <div className="flex mr-10 justify-center items-center">
           <MdOutlineSwipeLeft className="text-xl mr-1 -mt-1" />
           <p>Nope</p>

@@ -5,7 +5,7 @@ import Info from "../UserInfo";
 const Setting = () => {
   return (
     <Card className="w-full h-full shadow-lg" title={"Setting"}>
-      <Info className="mt-12" />
+      <Info className="-mt-3" />
     </Card>
   );
 };

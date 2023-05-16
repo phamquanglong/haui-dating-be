@@ -5,13 +5,19 @@ import DetailPartner from "./DetailPartner";
 const MoreInfo = ({
   userData,
   className,
+  width,
+  height,
 }: {
   userData?: IUser;
   className: string;
+  width: string;
+  height: string;
 }) => {
   return (
-    <div className={`w-full h-full overflow-y-scroll ${className}`}>
-      <div className="flex flex-col bg-white border-[1px] rounded-xl pb-4">
+    <div
+      className={`${width} ${height} overflow-y-scroll border-[1px] rounded-xl ${className}`}
+    >
+      <div className="flex flex-col bg-white pb-4">
         <DetailPartner userData={userData} />
       </div>
     </div>

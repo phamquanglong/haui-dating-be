@@ -34,10 +34,14 @@ const Card = ({
       onKeyDown={(e) => onKeyDown(e)}
     >
       <Info
+        width={width}
+        height={height}
         userData={userData}
         className={isShowMore === KEY_CODE?.ARROW_DOWN ? "" : "hidden"}
       />
       <MoreInfo
+        width={width}
+        height={height}
         userData={userData}
         className={isShowMore === KEY_CODE?.ARROW_UP ? "" : "hidden"}
       />

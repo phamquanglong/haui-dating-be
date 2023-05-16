@@ -16,7 +16,7 @@ const DetailPartner = ({ userData }: { userData?: IUser }) => {
     <>
       <Carousel autoplay>
         {userData?.images?.map((image) => (
-          <div className="w-full md:h-[270px] lg:h-[400px] rounded-t-xl ">
+          <div className="w-full md:h-[200px] lg:h-[320px] rounded-t-xl ">
             <img
               className="w-full h-full object-cover rounded-xl pointer-events-none"
               src={image.imageUrl}

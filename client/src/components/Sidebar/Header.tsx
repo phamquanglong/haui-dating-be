@@ -76,30 +76,12 @@ const Header = () => {
               ? user?.images[0]?.imageUrl
               : "https://res.cloudinary.com/dorbkvmvo/image/upload/v1659692903/nonavt_uolnwl.jpg"
           }
-          className="border-[1.5px] border-white md:w-12 md:h-12 lg:w-16 lg:h-16 shrink-0"
+          className="border-[1px] lg:border-[1.5px] border-white w-14 h-14 lg:w-16 lg:h-16 shrink-0"
         />
-        <h3 className="md:text-base lg:text-xl ml-2 text-red-50">
+        <h3 className="text-sm md:text-base lg:text-xl ml-2 text-red-50">
           {user?.profile?.fullName || "Welcome to HaUI Dating"}
         </h3>
       </div>
-
-      {/* <div className=" md:hidden lg:flex">
-        <Tooltip title="See who like you">
-          <CircleButton className="mr-2" onClick={handleLike}>
-            <HeartOutlined className="text-red-50" />
-          </CircleButton>
-        </Tooltip>
-        <Tooltip title="Setting">
-          <CircleButton className="mr-2" onClick={handleSetting}>
-            <SettingOutlined className="text-red-50" />
-          </CircleButton>
-        </Tooltip>
-        <Tooltip title="Logout">
-          <CircleButton onClick={handleLogout}>
-            <LogoutOutlined className="text-red-50" />
-          </CircleButton>
-        </Tooltip>
-      </div> */}
 
       <Popover content={renderDropDownOptions} trigger="click">
         <CircleButton className="border-[1px] bg-red-400">

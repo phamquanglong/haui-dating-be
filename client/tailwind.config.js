@@ -11,7 +11,7 @@ module.exports = {
         chat: "5fr 2fr",
       },
       gridTemplateRows: {
-        sidebar: "1fr 1.5fr 10fr",
+        sidebar: "1.25fr 1.5fr 10fr",
       },
 
       keyframes: {
