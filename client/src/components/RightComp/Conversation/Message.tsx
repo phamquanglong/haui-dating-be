@@ -169,11 +169,11 @@ const Message = ({
           </Popover>
           {isMyMessage && message?.id === max(listIdOfYourMessage) ? (
             message?.isSeen || isSeen ? (
-              <p className="absolute -bottom-4 lg:-bottom-6 right-0 text-xs font-light lg:font-normal text-gray-400">
+              <p className="absolute -bottom-4 right-0 text-xs font-light lg:font-normal text-gray-400">
                 Read
               </p>
             ) : (
-              <p className="absolute -bottom-4 lg:-bottom-6 right-0 text-xs font-light lg:font-normal text-primaryColor">
+              <p className="absolute -bottom-4 right-0 text-xs font-light lg:font-normal text-primaryColor">
                 Unread
               </p>
             )

@@ -14,10 +14,7 @@ export class ConversationsService {
 
   async getAllConversationByUserId(userId: number) {
     return await this.conversationRepository.find({
-      where: [
-        { userOne: { id: userId }, isActive: true },
-        { userTwo: { id: userId }, isActive: true },
-      ],
+      where: [{ userOne: { id: userId } }, { userTwo: { id: userId } }],
       relations: [
         'userOne',
         'userTwo',
@@ -30,7 +27,7 @@ export class ConversationsService {
         'userTwo.userHobbies',
         'userTwo.userHobbies.hobby',
       ],
-      order: { updatedAt: 'ASC' },
+      order: { updatedAt: 'DESC' },
     });
   }
 

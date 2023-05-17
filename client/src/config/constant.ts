@@ -47,4 +47,7 @@ export const WS_EVENT = {
 
   DELETE_MESSAGE: "delete_message",
   RECEIVE_DELETE_MESSAGE: "receive_delete_message",
+
+  UNMATCH: "unmtch",
+  RECEIVE_UNMATCH: "receive_unmatch",
 };

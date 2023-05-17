@@ -23,7 +23,7 @@ module.exports = {
         },
         miniDrop: {
           "0%": { transform: "none" },
-          "50%": { transform: "translateY(-20%)" },
+          "50%": { transform: "translateY(-30%)" },
           "100%": { transform: "none" },
         },
       },
@@ -31,7 +31,7 @@ module.exports = {
         "dot1-fall": "drop 1s ease-in-out 0.12s infinite",
         "dot2-fall": "drop 1s ease-in-out  0.24s infinite",
         "dot3-fall": "drop 1s ease-in-out  0.36s infinite",
-        "arrow-down-fall": "miniDrop 2s ease-in-out 0.12s infinite",
+        "arrow-down-fall": "miniDrop 1.5s ease-in-out 0.12s infinite",
       },
     },
   },

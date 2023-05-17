@@ -1,11 +1,16 @@
 import { Avatar, Tooltip } from "antd";
-import { find } from "lodash";
-import React, { useEffect, useRef } from "react";
+import { find, isEmpty } from "lodash";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../../hook/useAppSelector";
 import InputMessage from "./InputMessage";
 import Messages from "./Messages";
 import { AiFillInfoCircle, AiFillCloseCircle } from "react-icons/ai";
 import { MdFlagCircle } from "react-icons/md";
+import {
+  deleteMessageAction,
+  pushNewMessageAction,
+} from "../../../reducer/messages.reducer";
+import { useAppDispatch } from "../../../hook/useAppDispatch";
 
 const ChatBox = ({
   showInfo,
@@ -15,6 +20,8 @@ const ChatBox = ({
   setShowInfo: any;
 }) => {
   const currentUser = useAppSelector((state) => state.authReducer.user);
+  const socket = useAppSelector((state) => state.socketReducer.socket);
+  const dispatch = useAppDispatch();
   const listMessages = useAppSelector(
     (state) => state.messagesReducer.listMessages
   );
@@ -25,6 +32,9 @@ const ChatBox = ({
     (state) => state.partnerReducer.listPartnersOnline
   );
   const lastMessageRef = useRef<any>(null);
+  const [isActiveConversation, setActiveConversation] = useState<boolean>(
+    selectedConversation?.isActive
+  );
 
   const partner =
     selectedConversation?.userOne?.id === currentUser?.id
@@ -35,6 +45,25 @@ const ChatBox = ({
     lastMessageRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [listMessages]);
 
+  const handleUnmatchPartner = () => {
+    socket.unmatch(selectedConversation?.id);
+  };
+
+  useEffect(() => {
+    if (!isEmpty(socket)) {
+      socket.receiveUnmatch((data: any) => {
+        if (
+          data?.conversationId === selectedConversation?.id &&
+          data?.isActive === false
+        )
+          setActiveConversation(false);
+      });
+    }
+  }, [socket, dispatch, selectedConversation?.id]);
+
+  useEffect(() => {
+    setActiveConversation(selectedConversation?.isActive);
+  }, [selectedConversation?.id]);
   return (
     <div
       className={`h-[calc(100vh_-_4rem)] border-[0.125px]  ${
@@ -86,7 +115,10 @@ const ChatBox = ({
           </Tooltip>
           <Tooltip title="Unmatch">
             <div className="p-1 rounded-full hover:bg-gray-100">
-              <AiFillCloseCircle className="text-primaryColor font-semibold text-3xl" />
+              <AiFillCloseCircle
+                className="text-primaryColor font-semibold text-3xl"
+                onClick={() => handleUnmatchPartner()}
+              />
             </div>
           </Tooltip>
         </div>
@@ -95,7 +127,15 @@ const ChatBox = ({
         className="h-[80%] w-full border-b-[0.25px]"
         lastMessageRef={lastMessageRef}
       />
-      <InputMessage />
+      {isActiveConversation ? (
+        <InputMessage />
+      ) : (
+        <div className="h-[10%] w-full flex justify-center items-center px-8">
+          <p className="text-3xl text-gray-400">
+            This conversation has been disabled
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -61,23 +61,11 @@ const Card = ({
             <ImArrowDown className="text-white font-black text-2xl animate-arrow-down-fall" />
           </Tooltip>
         ) : (
-          <ImArrowUp className="text-white font-black text-xl" />
+          <Tooltip title="Less Info">
+            <ImArrowUp className="text-white font-black text-xl" />
+          </Tooltip>
         )}
       </CircleButton>
-      {/* <div className="w-full h-[20%] absolute bottom-0 flex justify-around items-center px-10">
-        <CircleButton
-          className="border-none shadow-2xl bg-primaryColor w-20 h-20 z-[1]"
-          onClick={() => handleCreateAction("left")}
-        >
-          <CloseOutlined className="text-white font-black text-3xl" />
-        </CircleButton>
-        <CircleButton
-          className="border-none shadow-2xl bg-green-500 w-20 h-20 z-[1]"
-          onClick={() => handleCreateAction("right")}
-        >
-          <HeartFilled className="text-white font-extrabold text-3xl" />
-        </CircleButton>
-      </div> */}
     </div>
   );
 };

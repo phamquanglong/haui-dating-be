@@ -157,20 +157,20 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
             isSeen: true,
           }),
       ),
-    );
+    ).then(async () => {
+      const listUserReceiveMessage = [
+        conversation.userOne.id,
+        conversation.userTwo.id,
+      ].filter((id) => id !== userId);
+      const listUserSocket = await this.userSocketService.findSocketsByUserIds(
+        listUserReceiveMessage,
+      );
 
-    const listUserReceiveMessage = [
-      conversation.userOne.id,
-      conversation.userTwo.id,
-    ].filter((id) => id !== userId);
-    const listUserSocket = await this.userSocketService.findSocketsByUserIds(
-      listUserReceiveMessage,
-    );
-
-    listUserSocket.map((userSocket) => {
-      this.server
-        .to(userSocket.socketId)
-        .emit(WS_EVENT.RECEIVE_UPDATE_IS_SEEN_MESSAGE, { isSeen: true });
+      listUserSocket.map((userSocket) => {
+        this.server
+          .to(userSocket.socketId)
+          .emit(WS_EVENT.RECEIVE_UPDATE_IS_SEEN_MESSAGE, { isSeen: true });
+      });
     });
   }
   @SubscribeMessage(WS_EVENT.DELETE_MESSAGE)
@@ -184,25 +184,57 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       payload.conversationId,
     );
 
-    await this.messageService.updateMessage(payload?.messageId, user, {
-      isDelete: true,
-    });
+    await this.messageService
+      .updateMessage(payload?.messageId, user, {
+        isDelete: true,
+      })
+      .then(async () => {
+        const listUserReceiveMessage = [
+          conversation.userOne.id,
+          conversation.userTwo.id,
+        ];
+        const listUserSocket =
+          await this.userSocketService.findSocketsByUserIds(
+            listUserReceiveMessage,
+          );
 
-    const listUserReceiveMessage = [
-      conversation.userOne.id,
-      conversation.userTwo.id,
-    ];
-    const listUserSocket = await this.userSocketService.findSocketsByUserIds(
-      listUserReceiveMessage,
+        listUserSocket.map((userSocket) => {
+          this.server
+            .to(userSocket.socketId)
+            .emit(WS_EVENT.RECEIVE_DELETE_MESSAGE, {
+              messId: payload?.messageId,
+              userDelete: userId,
+            });
+        });
+      });
+  }
+  @SubscribeMessage(WS_EVENT.UNMATCH)
+  async unmatch(client: Socket, payload: { conversationId: number }) {
+    const userId = await this.validation(client);
+    const conversation = await this.conversationService.getConversationById(
+      payload.conversationId,
     );
 
-    listUserSocket.map((userSocket) => {
-      this.server
-        .to(userSocket.socketId)
-        .emit(WS_EVENT.RECEIVE_DELETE_MESSAGE, {
-          messId: payload?.messageId,
-          userDelete: userId,
+    await this.conversationService
+      .update(payload?.conversationId, userId, {
+        isActive: false,
+      })
+      .then(async () => {
+        const listUserReceiveMessage = [
+          conversation.userOne.id,
+          conversation.userTwo.id,
+        ];
+        const listUserSocket =
+          await this.userSocketService.findSocketsByUserIds(
+            listUserReceiveMessage,
+          );
+
+        listUserSocket.map((userSocket) => {
+          this.server.to(userSocket.socketId).emit(WS_EVENT.RECEIVE_UNMATCH, {
+            conversationId: payload?.conversationId,
+            isActive: false,
+          });
         });
-    });
+      });
   }
 }

@@ -14,6 +14,8 @@ export interface ISocketService {
   receiveUpdateIsSeenMessage: (listener: any) => void;
   deleteMessage: (messageId: number, conversationId: number) => void;
   receiveDeleteMessage: (listener: any) => void;
+  unmatch: (conversationId: number) => void;
+  receiveUnmatch: (listener: any) => void;
 }
 
 export class SocketService implements ISocketService {
@@ -64,5 +66,12 @@ export class SocketService implements ISocketService {
 
   receiveDeleteMessage(listener: any) {
     this.socket.on(WS_EVENT.RECEIVE_DELETE_MESSAGE, listener);
+  }
+  unmatch(conversationId: number) {
+    this.socket.emit(WS_EVENT.UNMATCH, { conversationId });
+  }
+
+  receiveUnmatch(listener: any) {
+    this.socket.on(WS_EVENT.RECEIVE_UNMATCH, listener);
   }
 }
