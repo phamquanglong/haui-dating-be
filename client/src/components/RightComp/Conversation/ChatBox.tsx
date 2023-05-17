@@ -59,7 +59,7 @@ const ChatBox = ({
 
   useEffect(() => {
     setActiveConversation(selectedConversation?.isActive);
-  }, [selectedConversation?.id]);
+  }, [selectedConversation?.id, selectedConversation?.isActive]);
   return (
     <div
       className={`h-[calc(100vh_-_4rem)] border-[0.125px]  ${

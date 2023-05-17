@@ -4,7 +4,6 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 import ConversationApi from "../api/conversation.api";
-import { find } from "lodash";
 
 interface State {
   listConversations: any[];
