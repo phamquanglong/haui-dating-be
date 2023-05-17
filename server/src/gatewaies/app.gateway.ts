@@ -110,6 +110,9 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     );
 
     const newMessage = await this.messageService.postMessage(user, payload);
+    await this.conversationService.update(conversation?.id, userId, {
+      isActive: true,
+    });
 
     listUserSocket.map((userSocket) => {
       this.server

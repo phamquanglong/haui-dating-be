@@ -2,11 +2,7 @@ import { isEmpty } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../../hook/useAppDispatch";
 import { useAppSelector } from "../../../hook/useAppSelector";
-import {
-  callApiGetAllMessagesOfConversation,
-  deleteMessageAction,
-  pushNewMessageAction,
-} from "../../../reducer/messages.reducer";
+import { callApiGetAllMessagesOfConversation } from "../../../reducer/messages.reducer";
 import Message from "./Message";
 
 const Messages = ({
@@ -37,26 +33,9 @@ const Messages = ({
 
   useEffect(() => {
     if (!isEmpty(socket)) {
-      socket.receiveMessage((data: any) => {
-        if (data) {
-          if (selectedConversation?.id === data?.conversation?.id) {
-            dispatch(pushNewMessageAction(data));
-          }
-        }
-      });
-
       socket.receiveTypingStatus((data: any) => {
         if (selectedConversation?.id === data?.conversationId)
           setTypingStatus(data.isTyping);
-      });
-
-      socket.receiveDeleteMessage((data: any) => {
-        dispatch(
-          deleteMessageAction({
-            messId: data?.messId,
-            userDelete: data?.userDelete,
-          })
-        );
       });
     }
   }, [socket, dispatch, selectedConversation?.id]);

@@ -6,10 +6,6 @@ import InputMessage from "./InputMessage";
 import Messages from "./Messages";
 import { AiFillInfoCircle, AiFillCloseCircle } from "react-icons/ai";
 import { MdFlagCircle } from "react-icons/md";
-import {
-  deleteMessageAction,
-  pushNewMessageAction,
-} from "../../../reducer/messages.reducer";
 import { useAppDispatch } from "../../../hook/useAppDispatch";
 
 const ChatBox = ({

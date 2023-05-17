@@ -4,9 +4,10 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 import ConversationApi from "../api/conversation.api";
+import { find } from "lodash";
 
 interface State {
-  listConversations: any;
+  listConversations: any[];
   loading: boolean;
   selectedConversation: any;
 }
@@ -31,15 +32,23 @@ export const callApiGetAllConversations = createAsyncThunk(
 export const actionSelectConversation = createAction("CONVERSATIONS.SELECT");
 
 export const actionResetConversation = createAction("CONVERSATION.RESET");
+export const actionSortConversation = createAction<any>("CONVERSATION.SORT");
 
 export const conversationsReducer = createReducer(initState, (builder) => {
   builder.addCase(actionSelectConversation, (state, { payload }) => {
     state.selectedConversation = payload;
   });
 
-  builder.addCase(actionResetConversation, (state, { payload }) => {
+  builder.addCase(actionResetConversation, (state) => {
     state.listConversations = [];
     state.selectedConversation = {};
+  });
+
+  builder.addCase(actionSortConversation, (state, { payload }) => {
+    state.listConversations = [
+      payload,
+      ...state.listConversations.filter((conv) => conv?.id !== payload?.id),
+    ];
   });
 
   builder

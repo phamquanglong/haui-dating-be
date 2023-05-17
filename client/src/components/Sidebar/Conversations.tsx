@@ -101,11 +101,10 @@ const Conversations = () => {
                     </div>
                   }
                   title={
-                    <h5 className="font-bold mt-1 lg:mt-4 text-base lg:text-xl">
+                    <h5 className="font-bold mt-4 lg:mt-6 text-base lg:text-xl">
                       {item.title}
                     </h5>
                   }
-                  description={item.desc}
                 />
               </List.Item>
             )}
