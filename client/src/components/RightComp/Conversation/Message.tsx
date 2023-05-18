@@ -133,7 +133,7 @@ const Message = ({
         <div
           className={`relative right-0 max-w-[65%] break-words p-2 ${
             isMyMessage
-              ? "bg-primaryColor text-red-50 before:bfMyMess"
+              ? "bg-primaryColor text-red-50 "
               : "bg-[#ddd] before:bfOtherMess ml-2 text-gray-600"
           }  rounded-[10px]`}
         >

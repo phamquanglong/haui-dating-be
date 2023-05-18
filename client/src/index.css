@@ -12,8 +12,8 @@
     height: 20px;
     background: linear-gradient(
       135deg,
-      #ff4d4f 0%,
-      #ff4d4f 50%,
+      #377d29 0%,
+      #377d29 50%,
       transparent 50%,
       transparent
     );
@@ -47,8 +47,7 @@ body {
 }
 
 button {
-  background-color: "#efc13400";
-}
+  background-color: "#efc13400"; }
 
 /* width */
 ::-webkit-scrollbar {
