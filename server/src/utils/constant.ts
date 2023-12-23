@@ -15,4 +15,7 @@ export const WS_EVENT = {
 
   UNMATCH: 'unmtch',
   RECEIVE_UNMATCH: 'receive_unmatch',
+
+  CALL_VIDEO: 'call_video',
+  RECEIVE_CALL_VIDEO: 'receive_call_video',
 };

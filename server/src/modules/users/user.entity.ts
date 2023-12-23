@@ -30,6 +30,9 @@ export class User {
   @Column()
   email: string;
 
+  @Column({ nullable: true })
+  notificationToken: string;
+
   @Column()
   password: string;
 

@@ -26,6 +26,11 @@ export class MessagesService {
       body.conversationId,
     );
 
+    this.conversationService.update(body.conversationId, user.id, {
+      isActive: true,
+      latestMessage: body.message,
+    });
+
     return await this.messagesRepository.save({
       conversation,
       sender: user,

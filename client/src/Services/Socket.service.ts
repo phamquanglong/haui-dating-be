@@ -74,4 +74,12 @@ export class SocketService implements ISocketService {
   receiveUnmatch(listener: any) {
     this.socket.on(WS_EVENT.RECEIVE_UNMATCH, listener);
   }
+
+  sendCallVideo(conversationId: number, offer: any) {
+    this.socket.emit(WS_EVENT.CALL_VIDEO, { conversationId, offer });
+  }
+
+  receiveCallVideo(listener: any) {
+    this.socket.on(WS_EVENT.RECEIVE_CALL_VIDEO, listener);
+  }
 }

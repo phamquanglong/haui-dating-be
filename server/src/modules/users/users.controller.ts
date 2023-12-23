@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Patch,
   Post,
   Put,
@@ -60,5 +61,28 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.userService.uploadImageToCloudinary(file);
+  }
+
+  @Get(':id')
+  getUserById(@Param('id') id: string) {
+    return this.userService.getUserById(id as never);
+  }
+
+  @Post('noti/:id')
+  @UseGuards(JwtGuard)
+  pushNotification(
+    @Param('id') id: never,
+    @Body() body: { title: string; body: string; targetUser: any },
+  ) {
+    return this.userService.pushNotification(id, body);
+  }
+
+  @Post('notitoken')
+  @UseGuards(JwtGuard)
+  postNotificationToken(
+    @Body() body: { token: string },
+    @Req() request: Request & { user: User },
+  ) {
+    return this.userService.postNotificationToken(request.user.id, body.token);
   }
 }

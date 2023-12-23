@@ -17,7 +17,7 @@ import * as lodash from 'lodash';
 
 @WebSocketGateway(8080, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'http://172.20.10.3:9000',
   },
 })
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -95,30 +95,36 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage(WS_EVENT.SEND_MESSAGE)
   async sendMessage(client: Socket, payload: Message) {
-    const userId = await this.validation(client);
-    const user = await this.userService.getUser({ id: userId });
-    const conversation = await this.conversationService.getConversationById(
-      payload.conversationId,
-    );
+    try {
+      const userId = await this.validation(client);
+      const user = await this.userService.getUser({ id: userId });
+      const conversation = await this.conversationService.getConversationById(
+        payload.conversationId,
+      );
 
-    const listUserReceiveMessage = [
-      conversation.userOne.id,
-      conversation.userTwo.id,
-    ];
-    const listUserSocket = await this.userSocketService.findSocketsByUserIds(
-      listUserReceiveMessage,
-    );
+      const listUserReceiveMessage = [
+        conversation.userOne.id,
+        conversation.userTwo.id,
+      ];
 
-    const newMessage = await this.messageService.postMessage(user, payload);
-    await this.conversationService.update(conversation?.id, userId, {
-      isActive: true,
-    });
+      const listUserSocket = await this.userSocketService.findSocketsByUserIds(
+        listUserReceiveMessage,
+      );
 
-    listUserSocket.map((userSocket) => {
-      this.server
-        .to(userSocket.socketId)
-        .emit(WS_EVENT.RECEIVE_MESSAGE, newMessage);
-    });
+      const newMessage = await this.messageService.postMessage(user, payload);
+      await this.conversationService.update(conversation?.id, userId, {
+        isActive: true,
+      });
+
+      listUserSocket.map((userSocket) => {
+        this.server
+          .to(userSocket.socketId)
+          .emit(WS_EVENT.RECEIVE_MESSAGE, newMessage);
+      });
+      console.log('=====================================================');
+    } catch (error) {
+      console.log({ error });
+    }
   }
 
   @SubscribeMessage(WS_EVENT.TYPING)
@@ -239,5 +245,30 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
           });
         });
       });
+  }
+
+  @SubscribeMessage(WS_EVENT.CALL_VIDEO)
+  async sendCallVideo(
+    client: Socket,
+    payload: { conversationId: number; offer: any },
+  ) {
+    const userId = await this.validation(client);
+    const conversation = await this.conversationService.getConversationById(
+      payload.conversationId,
+    );
+
+    const partnerId = [conversation.userOne.id, conversation.userTwo.id].filter(
+      (el) => el !== userId,
+    );
+    const partnerSocket = await this.userSocketService.findSocketsByUserIds(
+      partnerId,
+    );
+
+    partnerSocket.map((userSocket) => {
+      this.server.to(userSocket.socketId).emit(WS_EVENT.RECEIVE_CALL_VIDEO, {
+        conversationId: payload.conversationId,
+        offer: payload.offer,
+      });
+    });
   }
 }

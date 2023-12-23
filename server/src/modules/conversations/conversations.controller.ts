@@ -17,11 +17,6 @@ import { ConversationsService } from './conversations.service';
 export class ConversationsController {
   constructor(private conversationService: ConversationsService) {}
 
-  // @Get()
-  // getAll() {
-  //   return this.conversationService.getAll();
-  // }
-
   @Get()
   @UseGuards(JwtGuard)
   getAllConversationByUserId(@Req() request: Request & { user: User }) {

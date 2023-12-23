@@ -14,6 +14,8 @@ import { UserInformationRequestDto } from './dto/user-information.dto';
 import { User } from './user.entity';
 import { ConversationsService } from '../conversations/conversations.service';
 import { Conversation } from '../conversations/conversations.entity';
+import admin from 'firebase-admin';
+import { title } from 'process';
 
 @Injectable()
 export class UsersService {
@@ -31,6 +33,60 @@ export class UsersService {
   async getAll(): Promise<User[]> {
     return await this.usersRepository.find({
       relations: ['profile', 'images', 'settings', 'userHobbies'],
+    });
+  }
+
+  async pushNotification(
+    id: never,
+    body: { title: string; body: string; targetUser: any },
+  ) {
+    const token = (await this.getUserById(id)).notificationToken;
+    token &&
+      (await admin
+        .messaging()
+        .send({
+          data: {
+            targetUser: body.targetUser,
+          },
+          notification: {
+            title: body.title,
+            body: body.body,
+          },
+          android: {
+            notification: {
+              sound: 'default',
+            },
+          },
+          apns: {
+            payload: {
+              aps: {
+                sound: 'default',
+              },
+            },
+          },
+          token: token,
+        })
+        .then((res) => console.log('huhu', res)));
+  }
+
+  async postNotificationToken(id: any, token: string) {
+    const user = await this.getUser({ id: id });
+    return await this.usersRepository.save({
+      ...user,
+      notificationToken: token,
+    });
+  }
+
+  async getUserById(userId: never): Promise<User> {
+    return await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: [
+        'profile',
+        'images',
+        'settings',
+        'userHobbies',
+        'userHobbies.hobby',
+      ],
     });
   }
 
